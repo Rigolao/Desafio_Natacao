@@ -1,5 +1,6 @@
 import 'package:desafio_6_etapa/login/login_content.dart';
 import 'package:desafio_6_etapa/theme/theme.g.dart';
+import 'package:desafio_6_etapa/treino/treino_content.dart';
 import 'package:flutter/material.dart';
 
 import 'home/home_content.dart';
