@@ -2,8 +2,6 @@ import 'package:desafio_6_etapa/treino/treino_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../atletas_treino/atletas_treino_content.dart';
-
 class TreinoContent extends StatefulWidget {
   const TreinoContent({super.key});
 
@@ -58,14 +56,7 @@ class _TreinoContentState extends State<TreinoContent> {
                               Align(
                                   alignment: Alignment.bottomRight,
                                   child: FilledButton(
-                                      onPressed: () => {
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      const AtletaTreinoContent()),
-                                            )
-                                          },
+                                      onPressed: () => controller.participar(context),
                                       child: const Text('Participar')))
                             ],
                           )),

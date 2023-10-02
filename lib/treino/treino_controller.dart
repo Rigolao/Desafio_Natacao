@@ -4,5 +4,10 @@ import 'package:flutter/material.dart';
 class TreinoController extends ChangeNotifier {
     final state = TreinoState(1);
 
+
     TreinoState get _state => state;
+
+    void participar(BuildContext context) {
+        Navigator.of(context).pushReplacementNamed('/treino');
+    }
 }
