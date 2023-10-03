@@ -6,26 +6,34 @@ import 'package:flutter/services.dart';
     final bool rating;
     const PersonCard({required this.rating, super.key});
 
-    @override
-    Widget build(BuildContext context) {
-      return Container(
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: const BorderRadius.all(Radius.circular(10)),
-          border: Border.all(color: Colors.grey),
-        ),
-        child: Padding(
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      elevation: 0,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+        side: const BorderSide(color: Colors.grey, width: 0.5),
+      ),
+      child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: ListTile(
-            leading: const Icon(Icons.person),
-            title: const Text('Matheus Rigolão'),
-            subtitle: const Text('Treinador', style: TextStyle(color: Colors.grey)),
-            trailing: rating == true ? FilledButton(onPressed: () => { _showModal(context)
-            }, child: Text('AVALIAR')) : null
-          ),
-        ),
-      );
-    }
+              dense: true,
+              leading: const Icon(Icons.person),
+              title: const Text('Matheus Rigolão'),
+              subtitle: const Text(
+                  'Treinador', style: TextStyle(color: Colors.grey)),
+              trailing: rating == true ?
+              CircleAvatar(
+                backgroundColor: Colors.grey[200],
+                child: IconButton(
+                  autofocus: true,
+                  focusColor: Colors.blue[200],
+                    onPressed: () {},
+                    icon: const Icon(Icons.timer_outlined)),
+              ) : null
+      ),
+    ),
+    );
   }
 
   void _showModal(BuildContext context) {

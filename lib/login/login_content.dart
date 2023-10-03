@@ -75,7 +75,7 @@ class _LoginContentState extends State<LoginContent> {
                                     const SizedBox(height: 16),
                                     TextFormField(
                                       controller: controller.state.senhaController,
-                                      obscureText: controller.state.showPassword,
+                                      obscureText: !controller.state.showPassword,
                                       decoration: InputDecoration(
                                         border: const OutlineInputBorder(),
                                         labelText: 'Senha',
