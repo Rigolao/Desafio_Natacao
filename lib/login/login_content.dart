@@ -2,6 +2,9 @@ import 'package:desafio_6_etapa/login/login_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../app/app_controller.dart';
+import '../entity/tipo_usuario.dart';
+import '../entity/usuario.dart';
 import '../theme/theme.g.dart';
 
 class LoginContent extends StatefulWidget {
@@ -12,15 +15,15 @@ class LoginContent extends StatefulWidget {
 }
 
 class _LoginContentState extends State<LoginContent> {
-
   @override
   Widget build(BuildContext context) {
+    final appController = Provider.of<AppController>(context, listen: false);
 
     return ChangeNotifierProvider(
-      create: (context) => LoginController(),
-      builder: (context, child) {
-        return Consumer<LoginController>(
-          builder: (context, controller, child) {
+        create: (context) => LoginController(),
+        builder: (context, child) {
+          return Consumer<LoginController>(
+              builder: (context, controller, child) {
             return Material(
               child: Stack(
                 children: [
@@ -43,8 +46,8 @@ class _LoginContentState extends State<LoginContent> {
                             child: Padding(
                               padding: const EdgeInsets.all(32.0),
                               child: Container(
-                                padding:
-                                const EdgeInsets.symmetric(vertical: 32, horizontal: 16),
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 32, horizontal: 16),
                                 decoration: BoxDecoration(
                                   color: Colors.white,
                                   borderRadius: BorderRadius.circular(8),
@@ -61,21 +64,26 @@ class _LoginContentState extends State<LoginContent> {
                                   children: [
                                     const SizedBox(height: 64),
                                     Text('Identificação',
-                                        style: TextStyle(fontSize: 24, color: lightColorScheme.primary, fontWeight: FontWeight.bold)),
+                                        style: TextStyle(
+                                            fontSize: 24,
+                                            color: lightColorScheme.primary,
+                                            fontWeight: FontWeight.bold)),
                                     const SizedBox(height: 48),
                                     TextFormField(
-                                      controller: controller.state.emailController,
+                                      controller:
+                                          controller.state.emailController,
                                       decoration: const InputDecoration(
-                                        border: OutlineInputBorder(),
-                                        labelText: 'E-mail',
-                                        suffixIcon: Icon(Icons.person)
-                                      ),
+                                          border: OutlineInputBorder(),
+                                          labelText: 'E-mail',
+                                          suffixIcon: Icon(Icons.person)),
                                       validator: controller.validateEmail,
                                     ),
                                     const SizedBox(height: 16),
                                     TextFormField(
-                                      controller: controller.state.senhaController,
-                                      obscureText: !controller.state.showPassword,
+                                      controller:
+                                          controller.state.senhaController,
+                                      obscureText:
+                                          !controller.state.showPassword,
                                       decoration: InputDecoration(
                                         border: const OutlineInputBorder(),
                                         labelText: 'Senha',
@@ -85,7 +93,8 @@ class _LoginContentState extends State<LoginContent> {
                                                 ? Icons.visibility_off
                                                 : Icons.visibility,
                                           ),
-                                          onPressed: controller.alterarVisibilidadeSenha,
+                                          onPressed: controller
+                                              .alterarVisibilidadeSenha,
                                         ),
                                       ),
                                       validator: controller.validatePassword,
@@ -94,10 +103,22 @@ class _LoginContentState extends State<LoginContent> {
                                       alignment: Alignment.centerRight,
                                       child: TextButton(
                                           onPressed: () => {},
-                                          child: const Text('ESQUECI MINHA SENHA')),
+                                          child: const Text(
+                                              'ESQUECI MINHA SENHA')),
                                     ),
                                     const SizedBox(height: 32),
-                                    FilledButton(onPressed: () => controller.logar(context, controller.state.formKey), child: const Text('Entrar')),
+                                    FilledButton(
+                                        onPressed: () {
+                                          appController.setUsuario(Usuario(
+                                              nome: 'João da Silva',
+                                              email: 'joao@email.com',
+                                              senha: '123456',
+                                              tipoUsuario:
+                                                  TipoUsuario.TREINADOR));
+                                          controller.logar(context,
+                                              controller.state.formKey);
+                                        },
+                                        child: const Text('Entrar')),
                                   ],
                                 ),
                               ),
@@ -120,9 +141,7 @@ class _LoginContentState extends State<LoginContent> {
                 ],
               ),
             );
-          }
-        );
-      }
-    );
+          });
+        });
   }
 }
