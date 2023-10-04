@@ -30,32 +30,46 @@ class HomeController extends ChangeNotifier {
           context: context,
           builder: (context) {
             return SizedBox(
-                height: 300,
-                child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 20, horizontal: 30),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text('Criar', style: TextStyle(fontSize: 20)),
-                      const Spacer(),
-                      BottomSheetButton(
-                          icone: Icons.sports_handball_outlined,
-                          texto: 'Cadastrar Atleta',
-                          onPressed: () => {}),
-                      const Spacer(),
-                      BottomSheetButton(
-                          icone: Icons.sports,
-                          texto: 'Cadastrar Treinador',
-                          onPressed: () => {}),
-                      const Spacer(),
-                      BottomSheetButton(
-                          icone: Icons.create,
-                          texto: 'Cadastrar Treino',
-                          onPressed: () => {}),
-                      const Spacer(),
-                    ],
-                  ),
+                height: 250,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      child: Row(
+                        children: [
+                          const Text('Criar', style: TextStyle(fontSize: 20, color: Colors.black)),
+                          const Spacer(),
+                          IconButton(
+                              onPressed: () => Navigator.pop(context),
+                              icon: const Icon(Icons.close))
+                        ],
+                      ),
+                    ),
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 0, 0, 16),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            BottomSheetButton(
+                                icone: Icons.sports_handball_outlined,
+                                texto: 'Cadastrar Atleta',
+                                onPressed: () => {}),
+                            BottomSheetButton(
+                                icone: Icons.sports,
+                                texto: 'Cadastrar Treinador',
+                                onPressed: () => {}),
+                            BottomSheetButton(
+                                icone: Icons.create,
+                                texto: 'Cadastrar Treino',
+                                onPressed: () => {}),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
                 ));
           });
     } else {
@@ -78,6 +92,8 @@ class Page2 extends StatelessWidget {
 class Page3 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return const AtletaTreinoContent();
+    return const Center(
+      child: Text('Perfil')
+    );
   }
 }

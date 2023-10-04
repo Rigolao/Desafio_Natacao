@@ -8,29 +8,32 @@ class BottomSheetButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return InkWell(
       onTap: onPressed,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          Container(
-            width: 40,
-            height: 40,
-            decoration: const BoxDecoration(
-              shape: BoxShape.circle,
-              color: Color(0xD0DCDCDC),
-            ),
-            child: Center(
-              child: Icon(
-                icone,
-                size: 25,
-                color: Colors.black,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 16),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Container(
+              width: 40,
+              height: 40,
+              decoration: const BoxDecoration(
+                shape: BoxShape.circle,
+                color: Color(0xD0DCDCDC),
+              ),
+              child: Center(
+                child: Icon(
+                  icone,
+                  size: 25,
+                  color: Colors.black,
+                ),
               ),
             ),
-          ),
-          const SizedBox(width: 15),
-          Text(texto, style: const TextStyle(fontSize: 15)),
-        ],
+            const SizedBox(width: 15),
+            Text(texto, style: const TextStyle(fontSize: 15, color: Colors.black)),
+          ],
+        ),
       ),
     );
   }
