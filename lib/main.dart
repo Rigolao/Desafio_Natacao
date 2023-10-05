@@ -1,3 +1,5 @@
+import 'package:desafio_6_etapa/atletas_treino/atletas_treino_content.dart';
+import 'package:desafio_6_etapa/cronometro/cronometro_content.dart';
 import 'package:desafio_6_etapa/login/login_content.dart';
 import 'package:desafio_6_etapa/theme/theme.g.dart';
 import 'package:desafio_6_etapa/treino/treino_content.dart';
@@ -32,7 +34,8 @@ class MyApp extends StatelessWidget {
       routes: {
         '/login': (context) => const LoginContent(),
         '/home': (context) => const HomeContent(),
-        '/treino': (context) => const TreinoContent(),
+        '/treino': (context) => const AtletaTreinoContent(),
+        '/nova': (context) => const CronometroContent(),
       }
     );
   }

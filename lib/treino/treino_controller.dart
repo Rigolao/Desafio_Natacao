@@ -9,6 +9,6 @@ class TreinoController extends ChangeNotifier {
     TreinoState get _state => state;
 
     void participar(BuildContext context) {
-        Navigator.of(context).pushReplacementNamed('/treino');
+        Navigator.of(context).pushNamed('/nova');
     }
 }
