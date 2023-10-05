@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:desafio_6_etapa/shared/person_card.dart';
 import 'package:desafio_6_etapa/theme/theme.g.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class CronometroContent extends StatefulWidget {
   const CronometroContent({super.key});
@@ -12,13 +13,52 @@ class CronometroContent extends StatefulWidget {
 }
 
 class _CronometroContentState extends State<CronometroContent> {
-  int segundos = 0, minutos = 0, horas = 0;
-  String digitoSegundos = "00", digitoMinutos = "00", digitoHoras = "00";
+  int millisegundos = 0;
   Timer? timer;
   bool comecar = false;
-  List intervalos = [];
+  List<TempoVolta> intervalos = [];
 
-  //controles
+  NumberFormat formatadorDuploZero = NumberFormat("00");
+  NumberFormat formatadorTriploZero = NumberFormat("000");
+
+  TempoVolta criarTempoVolta(List<TempoVolta> intervalos, int tempo) {
+    if(intervalos.isEmpty) {
+      return TempoVolta(tempo, tempo, intervalos.length + 1, isMelhorTempo(tempo), isPiorTempo(tempo));
+    } else {
+      return TempoVolta(tempo, tempo - intervalos.first.tempo, intervalos.length + 1, isMelhorTempo(tempo), isPiorTempo(tempo));
+    }
+  }
+
+  String getTempoFormatado(int tempo) {
+    int minutos = tempo ~/ 60 ~/ 1000;
+    int segundos = (tempo - (minutos * 60 * 1000)) ~/ 1000;
+    int milisegundos = tempo - (segundos * 1000) - (minutos * 60 * 1000);
+    return "${formatadorDuploZero.format(minutos)}:${formatadorDuploZero.format(segundos)}:${formatadorTriploZero.format(milisegundos)}";
+  }
+
+  bool isMelhorTempo(int tempo) {
+    bool melhorTempo = true;
+
+    for(int i = 0; i < intervalos.length; i++) {
+      if(tempo > intervalos[i].tempo) {
+        melhorTempo = false;
+      }
+    }
+
+    return melhorTempo;
+  }
+
+  bool isPiorTempo(int tempo) {
+    bool piorTempo = true;
+
+    for(int i = 0; i < intervalos.length; i++) {
+      if(tempo < intervalos[i].tempo) {
+        piorTempo = false;
+      }
+    }
+
+    return piorTempo;
+  }
 
   void parar() {
     timer!.cancel();
@@ -30,13 +70,7 @@ class _CronometroContentState extends State<CronometroContent> {
   void reset() {
     timer!.cancel();
     setState(() {
-      segundos = 0;
-      minutos = 0;
-      horas = 0;
-
-      digitoSegundos = "00";
-      digitoMinutos = "00";
-      digitoHoras = "00";
+      millisegundos = 0;
 
       comecar = false;
 
@@ -46,41 +80,16 @@ class _CronometroContentState extends State<CronometroContent> {
 
   void addIntervalos() {
     setState(() {
-      intervalos.add("$digitoHoras : $digitoMinutos : $digitoSegundos");
+      intervalos.insert(0, criarTempoVolta(intervalos, millisegundos));
     });
   }
 
   void start() {
     comecar = true;
-    timer = Timer.periodic(Duration(seconds: 1), (timer) {
+
+    timer = Timer.periodic(const Duration(milliseconds: 1), (timer) {
       setState(() {
-        segundos++;
-        if (segundos == 60) {
-          segundos = 0;
-          minutos++;
-        }
-        if (minutos == 60) {
-          minutos = 0;
-          horas++;
-        }
-
-        if (segundos < 10) {
-          digitoSegundos = "0$segundos";
-        } else {
-          digitoSegundos = "$segundos";
-        }
-
-        if (minutos < 10) {
-          digitoMinutos = "0$minutos";
-        } else {
-          digitoMinutos = "$minutos";
-        }
-
-        if (horas < 10) {
-          digitoHoras = "0$horas";
-        } else {
-          digitoHoras = "$horas";
-        }
+        millisegundos += 1;
       });
     });
   }
@@ -114,8 +123,8 @@ class _CronometroContentState extends State<CronometroContent> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start, // Alinhar à esquerda
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.all(16.0),
+                      const Padding(
+                        padding: EdgeInsets.all(16.0),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -156,23 +165,47 @@ class _CronometroContentState extends State<CronometroContent> {
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    "Volta nº${index + 1}",
+                                    intervalos[index].volta.toString(),
                                     style: TextStyle(
-                                      color: Colors.black,
+                                      color: (){
+                                        if(isMelhorTempo(intervalos[index].tempoVolta)) {
+                                          return Colors.green;
+                                        } else if(isPiorTempo(intervalos[index].tempoVolta)) {
+                                          return Colors.red;
+                                        } else {
+                                          return Colors.black;
+                                        }
+                                      }(),
                                       fontSize: 16.0,
                                     ),
                                   ),
                                   Text(
-                                    "${intervalos[index]}",
+                                    getTempoFormatado(intervalos[index].tempoVolta),
                                     style: TextStyle(
-                                      color: Colors.black,
+                                      color: () {
+                                        if(isMelhorTempo(intervalos[index].tempoVolta)) {
+                                          return Colors.green;
+                                        } else if(isPiorTempo(intervalos[index].tempoVolta)) {
+                                          return Colors.red;
+                                        } else {
+                                          return Colors.black;
+                                        }
+                                      }(),
                                       fontSize: 16.0,
                                     ),
                                   ),
                                   Text(
-                                    "${intervalos[index]}",
+                                    getTempoFormatado(intervalos[index].tempo),
                                     style: TextStyle(
-                                      color: Colors.black,
+                                      color: () {
+                                        if(intervalos[index].isMelhorVolta) {
+                                          return Colors.green;
+                                        } else if(intervalos[index].isPiorVolta) {
+                                          return Colors.red;
+                                        } else {
+                                          return Colors.black;
+                                        }
+                                      }(),
                                       fontSize: 16.0,
                                     ),
                                   ),
@@ -191,7 +224,7 @@ class _CronometroContentState extends State<CronometroContent> {
                     decoration: BoxDecoration(
                       color: Colors.green,
                       border: Border.all(color: Colors.grey, width: 1.0),
-                      borderRadius: BorderRadius.only(
+                      borderRadius: const BorderRadius.only(
                           topLeft: Radius.circular(12.0),
                           topRight: Radius.circular(12.0)),
                     ),
@@ -204,8 +237,8 @@ class _CronometroContentState extends State<CronometroContent> {
                     ),
                     child: Center(
                         child: Text(
-                      "$digitoHoras : $digitoMinutos : $digitoSegundos",
-                      style: TextStyle(
+                          getTempoFormatado(millisegundos),
+                      style: const TextStyle(
                         fontSize: 64.0,
                         fontWeight: FontWeight.w400,
                         color: Colors.black,
@@ -225,12 +258,12 @@ class _CronometroContentState extends State<CronometroContent> {
                               side: BorderSide(color: Colors.blue),
                             ),
                             child: Text((!comecar) ? "Começar" : "Parar",
-                                style: TextStyle(color: Colors.black)))),
-                    SizedBox(width: 8.0),
+                                style: const TextStyle(color: Colors.black)))),
+                    const SizedBox(width: 8.0),
                     IconButton(onPressed: () {
                       addIntervalos();
-                    }, icon: Icon(Icons.flag)),
-                    SizedBox(width: 8.0),
+                    }, icon: const Icon(Icons.flag)),
+                    const SizedBox(width: 8.0),
                     Expanded(
                         child: RawMaterialButton(
                             onPressed: () {
@@ -240,11 +273,21 @@ class _CronometroContentState extends State<CronometroContent> {
                             shape: const StadiumBorder(
                               side: BorderSide(color: Colors.blue),
                             ),
-                            child: Text("Parar",
+                            child: const Text("Reset",
                                 style: TextStyle(color: Colors.black))))
                   ],
                 ),
               ]),
         )));
   }
+}
+
+class TempoVolta {
+  int tempo;
+  int tempoVolta;
+  int volta;
+  bool isMelhorVolta;
+  bool isPiorVolta;
+
+  TempoVolta(this.tempo, this.tempoVolta, this.volta, this.isMelhorVolta, this.isPiorVolta);
 }
