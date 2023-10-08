@@ -1,3 +1,4 @@
+import 'package:desafio_6_etapa/finalizar_cadastro/finalizar_cadastro_content.dart';
 import 'package:flutter/material.dart';
 
 import '../entity/usuario.dart';
@@ -14,25 +15,11 @@ class AppController extends ChangeNotifier {
   }
 
   void isUsuarioCompleted(BuildContext context) {
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       if (_state.usuario == null) {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: Text('Título do Alerta'),
-              content: Text('Este é o conteúdo do alerta.'),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop(); // Fecha o alerta
-                  },
-                  child: Text('Fechar'),
-                ),
-              ],
-            );
-          },
-        );
+        Navigator.push(context, MaterialPageRoute(builder: (context) {
+          return const FinalizarCadastroContent();
+        }));
       }
       notifyListeners();
     });
