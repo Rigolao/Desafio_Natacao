@@ -47,28 +47,6 @@ class FinalizarCadastroController extends ChangeNotifier {
     ),
   );
 
-  // region Controllers
-  final TextEditingController _dataController = TextEditingController();
-  final TextEditingController _naturalidadeController = TextEditingController();
-  final TextEditingController _nacionalidadeController = TextEditingController();
-  final TextEditingController _cpfController = TextEditingController();
-  final TextEditingController _rgController = TextEditingController();
-  final TextEditingController _enderecoController = TextEditingController();
-  final TextEditingController _bairroController = TextEditingController();
-  final TextEditingController _cidadeController = TextEditingController();
-  final TextEditingController _estadoController = TextEditingController();
-  final TextEditingController _cepController = TextEditingController();
-  final TextEditingController _nomePaiController = TextEditingController();
-  final TextEditingController _nomeMaeController = TextEditingController();
-  final TextEditingController _clubeOrigemController = TextEditingController();
-  final TextEditingController _empresaTrabalhaController = TextEditingController();
-  final TextEditingController _cvmController = TextEditingController();
-  final TextEditingController _alergiaController = TextEditingController();
-  final TextEditingController _estController = TextEditingController();
-  final TextEditingController _pvrController = TextEditingController();
-  String? atestadoController = '';
-  // endregion
-
   void changePage(int index) {
     _state.currentIndex = index;
     notifyListeners();
@@ -110,42 +88,5 @@ class FinalizarCadastroController extends ChangeNotifier {
 
   // region Getters
   FinalizarCadastroState get _state => state;
-
-  TextEditingController get dataController => _dataController;
-
-  TextEditingController get naturalidadeController => _naturalidadeController;
-
-  TextEditingController get nacionalidadeController => _nacionalidadeController;
-
-  TextEditingController get cpfController => _cpfController;
-
-  TextEditingController get rgController => _rgController;
-
-  TextEditingController get enderecoController => _enderecoController;
-
-  TextEditingController get bairroController => _bairroController;
-
-  TextEditingController get cidadeController => _cidadeController;
-
-  TextEditingController get estadoController => _estadoController;
-
-  TextEditingController get cepController => _cepController;
-
-  TextEditingController get nomePaiController => _nomePaiController;
-
-  TextEditingController get nomeMaeController => _nomeMaeController;
-
-  TextEditingController get clubeOrigemController => _clubeOrigemController;
-
-  TextEditingController get empresaTrabalhaController =>
-      _empresaTrabalhaController;
-
-  TextEditingController get cvmController => _cvmController;
-
-  TextEditingController get alergiaController => _alergiaController;
-
-  TextEditingController get estController => _estController;
-
-  TextEditingController get pvrController => _pvrController;
-  // endregion
+  //endregion
 }

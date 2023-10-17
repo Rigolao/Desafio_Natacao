@@ -58,7 +58,7 @@ class FinalizarCadastroContent extends StatelessWidget {
               floatingActionButton: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: controller.state.currentIndex == 0 ? MainAxisAlignment.end : MainAxisAlignment.spaceBetween,
                   children: [
                     if (controller.state.currentIndex > 0)
                       FloatingActionButton(

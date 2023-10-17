@@ -7,62 +7,56 @@ class EnderencoContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => FinalizarCadastroController(),
-      builder: (context, child) {
-        return Consumer<FinalizarCadastroController>(
-          builder: (context, controller, child) {
-            return SingleChildScrollView(
-              child: Wrap(
-                alignment: WrapAlignment.center,
-                runSpacing: 16,
-                children: [
-                  TextFormField(
-                    controller: controller.enderecoController,
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Endereço',
-                      hintText: 'Digite seu endereço',
-                    ),
-                  ),
-                  TextFormField(
-                    controller: controller.bairroController,
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Bairro',
-                      hintText: 'Digite seu bairro',
-                    ),
-                  ),
-                  TextFormField(
-                    controller: controller.cepController,
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'CEP',
-                      hintText: 'Digite seu CEP',
-                    ),
-                  ),
-                  TextFormField(
-                    controller: controller.cidadeController,
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Cidade',
-                      hintText: 'Digite sua cidade',
-                    ),
-                  ),
-                  TextFormField(
-                    controller: controller.enderecoController,
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Estado',
-                      hintText: 'Digite seu estado',
-                    ),
-                  ),
-                ],
-              ),
-            );
-          },
-        );
-      },
+
+    final controller = Provider.of<FinalizarCadastroController>(context, listen: false);
+
+    return SingleChildScrollView(
+      child: Wrap(
+        alignment: WrapAlignment.center,
+        runSpacing: 16,
+        children: [
+          TextFormField(
+            controller: controller.state.enderecoController,
+            decoration: const InputDecoration(
+              border: OutlineInputBorder(),
+              labelText: 'Endereço',
+              hintText: 'Digite seu endereço',
+            ),
+          ),
+          TextFormField(
+            controller: controller.state.bairroController,
+            decoration: const InputDecoration(
+              border: OutlineInputBorder(),
+              labelText: 'Bairro',
+              hintText: 'Digite seu bairro',
+            ),
+          ),
+          TextFormField(
+            controller: controller.state.cepController,
+            decoration: const InputDecoration(
+              border: OutlineInputBorder(),
+              labelText: 'CEP',
+              hintText: 'Digite seu CEP',
+            ),
+          ),
+          TextFormField(
+            controller: controller.state.cidadeController,
+            decoration: const InputDecoration(
+              border: OutlineInputBorder(),
+              labelText: 'Cidade',
+              hintText: 'Digite sua cidade',
+            ),
+          ),
+          TextFormField(
+            controller: controller.state.estadoController,
+            decoration: const InputDecoration(
+              border: OutlineInputBorder(),
+              labelText: 'Estado',
+              hintText: 'Digite seu estado',
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

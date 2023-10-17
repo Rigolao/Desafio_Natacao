@@ -9,35 +9,29 @@ class ImagensContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => FinalizarCadastroController(),
-      builder: (context, child) {
-        return Consumer<FinalizarCadastroController>(
-          builder: (context, controller, child) {
-            return SingleChildScrollView(
-              child: Wrap(
-                children: [
-                  PhotoPicker(title: "Atestado médico", changeImage: (value) {
-                    controller.atestadoController = value;
-                  }),
-                  PhotoPicker(title: "RG", changeImage: (value) {
-                    controller.atestadoController = value;
-                  }),
-                  PhotoPicker(title: "CPF", changeImage: (value) {
-                    controller.atestadoController = value;
-                  }),
-                  PhotoPicker(title: "Comprovante de residência", changeImage: (value) {
-                    controller.atestadoController = value;
-                  }),
-                  PhotoPicker(title: "Foto 3x4", changeImage: (value) {
-                    controller.atestadoController = value;
-                  }),
-                ],
-              ),
-            );
-          },
-        );
-      },
+
+    final controller = Provider.of<FinalizarCadastroController>(context, listen: false);
+
+    return SingleChildScrollView(
+      child: Wrap(
+        children: [
+          PhotoPicker(title: "Atestado médico", changeImage: (value) {
+            controller.state.atestadoController = value;
+          }),
+          PhotoPicker(title: "RG", changeImage: (value) {
+            controller.state.atestadoController = value;
+          }),
+          PhotoPicker(title: "CPF", changeImage: (value) {
+            controller.state.atestadoController = value;
+          }),
+          PhotoPicker(title: "Comprovante de residência", changeImage: (value) {
+            controller.state.atestadoController = value;
+          }),
+          PhotoPicker(title: "Foto 3x4", changeImage: (value) {
+            controller.state.atestadoController = value;
+          }),
+        ],
+      ),
     );
   }
 }

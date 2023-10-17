@@ -7,78 +7,72 @@ class DadosBasicosContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => FinalizarCadastroController(),
-      builder: (context, child) {
-        return Consumer<FinalizarCadastroController>(
-          builder: (context, controller, child) {
-            return SingleChildScrollView(
-              child: Wrap(
-                alignment: WrapAlignment.center,
-                runSpacing: 16,
-                children: [
-                  TextFormField(
-                    controller: controller.cpfController,
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'CPF',
-                      hintText: 'Digite seu CPF',
-                    ),
-                  ),
-                  TextFormField(
-                    controller: controller.rgController,
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'RG',
-                      hintText: 'Digite seu RG',
-                    ),
-                  ),
-                  TextFormField(
-                    controller: controller.nomeMaeController,
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Nome da Mãe',
-                      hintText: 'Digite o nome da mãe',
-                    ),
-                  ),
-                  TextFormField(
-                    controller: controller.nomePaiController,
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Nome do Pai',
-                      hintText: 'Digite o nome do pai',
-                    ),
-                  ),
-                  TextFormField(
-                    controller: controller.dataController,
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Data de Nascimento',
-                      hintText: 'Digite sua data de nascimento',
-                    ),
-                  ),
-                  TextFormField(
-                    controller: controller.naturalidadeController,
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Naturalizade',
-                      hintText: 'Digite sua naturalidade',
-                    ),
-                  ),
-                  TextFormField(
-                    controller: controller.nacionalidadeController,
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Nacionalidade',
-                      hintText: 'Digite sua nacionalidade',
-                    ),
-                  ),
-                ],
-              ),
-            );
-          },
-        );
-      },
+
+    final controller = Provider.of<FinalizarCadastroController>(context, listen: false);
+
+    return SingleChildScrollView(
+      child: Wrap(
+        alignment: WrapAlignment.center,
+        runSpacing: 16,
+        children: [
+          TextFormField(
+            controller: controller.state.cpfController,
+            decoration: const InputDecoration(
+              border: OutlineInputBorder(),
+              labelText: 'CPF',
+              hintText: 'Digite seu CPF',
+            ),
+          ),
+          TextFormField(
+            controller: controller.state.rgController,
+            decoration: const InputDecoration(
+              border: OutlineInputBorder(),
+              labelText: 'RG',
+              hintText: 'Digite seu RG',
+            ),
+          ),
+          TextFormField(
+            controller: controller.state.nomeMaeController,
+            decoration: const InputDecoration(
+              border: OutlineInputBorder(),
+              labelText: 'Nome da Mãe',
+              hintText: 'Digite o nome da mãe',
+            ),
+          ),
+          TextFormField(
+            controller: controller.state.nomePaiController,
+            decoration: const InputDecoration(
+              border: OutlineInputBorder(),
+              labelText: 'Nome do Pai',
+              hintText: 'Digite o nome do pai',
+            ),
+          ),
+          TextFormField(
+            controller: controller.state.dataController,
+            decoration: const InputDecoration(
+              border: OutlineInputBorder(),
+              labelText: 'Data de Nascimento',
+              hintText: 'Digite sua data de nascimento',
+            ),
+          ),
+          TextFormField(
+            controller: controller.state.naturalidadeController,
+            decoration: const InputDecoration(
+              border: OutlineInputBorder(),
+              labelText: 'Naturalizade',
+              hintText: 'Digite sua naturalidade',
+            ),
+          ),
+          TextFormField(
+            controller: controller.state.nacionalidadeController,
+            decoration: const InputDecoration(
+              border: OutlineInputBorder(),
+              labelText: 'Nacionalidade',
+              hintText: 'Digite sua nacionalidade',
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
