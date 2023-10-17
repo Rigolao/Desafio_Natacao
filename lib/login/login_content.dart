@@ -109,12 +109,13 @@ class _LoginContentState extends State<LoginContent> {
                                     const SizedBox(height: 32),
                                     FilledButton(
                                         onPressed: () {
-                                          // appController.setUsuario(Usuario(
-                                          //     nome: 'João da Silva',
-                                          //     email: 'joao@email.com',
-                                          //     senha: '123456',
-                                          //     tipoUsuario:
-                                          //         TipoUsuario.TREINADOR));
+                                          // Temporario
+                                          appController.setUsuario(Usuario(
+                                              nome: 'João da Silva',
+                                              email: 'joao@email.com',
+                                              senha: '123456',
+                                              tipoUsuario:
+                                                  TipoUsuario.ADMINISTRADOR));
                                           controller.logar(context,
                                               controller.state.formKey);
                                         },

@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:desafio_6_etapa/cadastrar_usuario/cadastrar_usuario_content.dart';
 import 'package:flutter/material.dart';
 
 import '../atletas_treino/atletas_treino_content.dart';
@@ -8,24 +11,60 @@ import 'components/bottom_sheet_button.dart';
 import 'home_state.dart';
 
 class HomeController extends ChangeNotifier {
-  final state = HomeState(
-      'Treinos',
-      0,
-      [
-        const TreinoContent(),
-        Page2(),
-        Page3(),
-      ],
-      Usuario(
-          nome: 'Matheus',
-          email: 'mrigolao@gmail.com',
-          senha: '123456',
-          tipoUsuario: TipoUsuario.TREINADOR));
+  final state = HomeState('Treinos', 0, [
+    const TreinoContent(),
+    Page2(),
+    Page3(),
+  ], []);
 
   HomeState get _state => state;
 
-  Function(int) onTabTapped(BuildContext context, int index) {
-    if (index == 1 && _state.usuario.tipoUsuario == TipoUsuario.TREINADOR) {
+  void inicializar(TipoUsuario tipoUsuario) {
+    if (_state.isLoading) {
+      Timer(const Duration(seconds: 2), () {
+        if (tipoUsuario == TipoUsuario.ADMINISTRADOR) {
+          state.usuarios.addAll([
+            Usuario(
+              nome: 'Matheus',
+              email: 'matheus@email.com',
+              senha: '123456',
+              tipoUsuario: TipoUsuario.TREINADOR,
+            ),
+            Usuario(
+              nome: 'João',
+              email: 'jao@email.com',
+              senha: '123456',
+              tipoUsuario: TipoUsuario.ADMINISTRADOR,
+            ),
+            Usuario(
+              nome: 'Diego',
+              email: 'diego@email.com',
+              senha: '123456',
+              tipoUsuario: TipoUsuario.ADMINISTRADOR,
+            ),
+          ]);
+        }
+
+        _state.isLoading = false;
+        notifyListeners();
+      });
+    }
+  }
+
+  void removerUsuario(int index) {
+    _state.usuarios.removeAt(index);
+    notifyListeners();
+  }
+
+  void navegaCriarUsuario(BuildContext context, {Usuario? usuario}) {
+    Navigator.push(context, MaterialPageRoute(builder: (context) {
+      return CadastrarUsuarioContent(usuario: usuario);
+    }));
+  }
+
+  Function(int) onTabTapped(
+      BuildContext context, int index, TipoUsuario tipoUsuario) {
+    if (index == 1 && tipoUsuario == TipoUsuario.TREINADOR) {
       showModalBottomSheet(
           context: context,
           builder: (context) {
@@ -35,10 +74,13 @@ class HomeController extends ChangeNotifier {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 8),
                       child: Row(
                         children: [
-                          const Text('Criar', style: TextStyle(fontSize: 20, color: Colors.black)),
+                          const Text('Criar',
+                              style:
+                                  TextStyle(fontSize: 20, color: Colors.black)),
                           const Spacer(),
                           IconButton(
                               onPressed: () => Navigator.pop(context),
@@ -78,7 +120,8 @@ class HomeController extends ChangeNotifier {
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       _state.currentIndex = index;
       notifyListeners();
-    });    return (index) => onTabTapped(context, index);
+    });
+    return (index) => onTabTapped(context, index, tipoUsuario);
   }
 }
 
@@ -92,8 +135,6 @@ class Page2 extends StatelessWidget {
 class Page3 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text('Perfil')
-    );
+    return const Center(child: Text('Perfil'));
   }
 }

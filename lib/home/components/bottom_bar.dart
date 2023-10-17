@@ -51,7 +51,6 @@ class BottomBar extends StatelessWidget {
         ),
       ] :
       [],
-
     );
   }
 }
