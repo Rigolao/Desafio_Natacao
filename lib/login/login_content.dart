@@ -115,7 +115,7 @@ class _LoginContentState extends State<LoginContent> {
                                               email: 'joao@email.com',
                                               senha: '123456',
                                               tipoUsuario:
-                                                  TipoUsuario.ADMINISTRADOR));
+                                                  TipoUsuario.TREINADOR));
                                           controller.logar(context,
                                               controller.state.formKey);
                                         },

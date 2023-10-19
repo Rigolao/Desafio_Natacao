@@ -9,12 +9,12 @@ class CadastrarTreinoState {
   final TextEditingController descricaoController;
 
   CadastrarTreinoState(
-    this.isLoading,
-    this.isSucesso,
-    this.mensagem,
-    this.formKey,
-    this.horarioController,
-    this.descricaoController,
+  {required this.formKey,
+      required this.horarioController,
+      required this.descricaoController,
+      this.isLoading = false,
+      this.isSucesso = false,
+      this.mensagem = ''}
   );
 
 }

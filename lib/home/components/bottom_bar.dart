@@ -22,12 +22,10 @@ class BottomBar extends StatelessWidget {
           icon: Icon(Icons.sports),
           label: 'Treino',
         ),
-        BottomNavigationBarItem(
+        const BottomNavigationBarItem(
           icon: Align(
             alignment: Alignment.bottomCenter,
-            child: Container(
-              child: Icon(Icons.add_circle_outline, size: 40),
-            ),
+            child: Icon(Icons.add_circle_outline, size: 40),
           ),
           label: "",
         ),

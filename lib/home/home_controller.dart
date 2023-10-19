@@ -69,7 +69,7 @@ class HomeController extends ChangeNotifier {
           context: context,
           builder: (context) {
             return SizedBox(
-                height: 250,
+                height: 200,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -96,17 +96,17 @@ class HomeController extends ChangeNotifier {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             BottomSheetButton(
-                                icone: Icons.sports_handball_outlined,
-                                texto: 'Cadastrar Atleta',
-                                onPressed: () => {}),
-                            BottomSheetButton(
                                 icone: Icons.sports,
                                 texto: 'Cadastrar Treinador',
-                                onPressed: () => {}),
+                                onPressed: () => {
+                                  Navigator.of(context).pushNamed('/cadastrar-usuario')
+                                }),
                             BottomSheetButton(
                                 icone: Icons.create,
                                 texto: 'Cadastrar Treino',
-                                onPressed: () => {}),
+                                onPressed: () => {
+                                  Navigator.of(context).pushNamed('/cadastrar-treino')
+                                }),
                           ],
                         ),
                       ),

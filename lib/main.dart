@@ -1,4 +1,5 @@
 import 'package:desafio_6_etapa/atletas_treino/atletas_treino_content.dart';
+import 'package:desafio_6_etapa/cadastrar_treino/cadastrar_treino_content.dart';
 import 'package:desafio_6_etapa/cronometro/cronometro_content.dart';
 import 'package:desafio_6_etapa/login/login_content.dart';
 import 'package:desafio_6_etapa/theme/theme.g.dart';
@@ -7,7 +8,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'app/app_controller.dart';
+import 'cadastrar_usuario/cadastrar_usuario_content.dart';
 import 'home/home_content.dart';
+import 'home/home_controller.dart';
 
 void main() {
   runApp(ChangeNotifierProvider(
@@ -23,20 +26,28 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Natação Unaerp',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: lightColorScheme,
-        useMaterial3: true,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => HomeController()), // Fornecendo o HomeController
+        ChangeNotifierProvider(create: (context) => AppController()),
+      ],
+      child: MaterialApp(
+        title: 'Natação Unaerp',
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          colorScheme: lightColorScheme,
+          useMaterial3: true,
+        ),
+        home: const LoginContent(),
+        routes: {
+          '/login': (context) => const LoginContent(),
+          '/home': (context) => const HomeContent(),
+          '/treino': (context) => const AtletaTreinoContent(),
+          '/cadastrar-usuario': (context) => const CadastrarUsuarioContent(),
+          '/cadastrar-treino': (context) => const CadastrarTreinoContent(),
+          '/nova': (context) => const CronometroContent(),
+        }
       ),
-      home: const LoginContent(),
-      routes: {
-        '/login': (context) => const LoginContent(),
-        '/home': (context) => const HomeContent(),
-        '/treino': (context) => const AtletaTreinoContent(),
-        '/nova': (context) => const CronometroContent(),
-      }
     );
   }
 }
