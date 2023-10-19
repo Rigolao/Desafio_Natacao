@@ -13,14 +13,13 @@ class CadastrarUsuarioContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-    //final homeController = Provider.of<HomeController>(context, listen: false);
-
     return ChangeNotifierProvider(
         create: (context) => CadastrarUsuarioController(),
         builder: (context, child) {
           return Consumer<CadastrarUsuarioController>(
               builder: (context, controller, child) {
+            final homeController =
+                Provider.of<HomeController>(context, listen: true);
 
             if (usuario != null) {
               controller.setUsuario(usuario!);
@@ -83,7 +82,15 @@ class CadastrarUsuarioContent extends StatelessWidget {
                             ),
                           ),
                           FilledButton(
-                              onPressed: () {}, child: const Text('Cadastrar'))
+                              onPressed: () {
+                                if(controller.state.usuario.nome == '') {
+                                  controller.addUsuario(homeController.state.usuarios);
+                                } else {
+                                  controller.editarUsuario(homeController.state.usuarios, homeController.state.usuarios.indexOf(usuario!));
+                                }
+                                Navigator.of(context).pop();
+                              },
+                              child: Text(controller.state.usuario.nome == '' ? 'Cadastrar' : 'Atualizar'))
                         ],
                       ),
                     ),

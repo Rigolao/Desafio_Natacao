@@ -22,6 +22,19 @@ class CadastrarUsuarioController extends ChangeNotifier {
     notifyListeners();
   }
 
+  void editarUsuario(final List<Usuario> listaUsuarios, int index) {
+    final Usuario usuario = Usuario(
+      nome: _state.nomeController.text,
+      email: _state.emailController.text,
+      senha: _state.senhaController.text,
+      tipoUsuario: _state.usuario.tipoUsuario,
+    );
+
+    listaUsuarios[index] = usuario;
+
+    notifyListeners();
+  }
+
   void atualizarTipoUsuario(bool isAdministrador) {
     _state.usuario.tipoUsuario = isAdministrador
         ? TipoUsuario.ADMINISTRADOR
@@ -31,7 +44,6 @@ class CadastrarUsuarioController extends ChangeNotifier {
 
   void setUsuario(Usuario usuario) {
     _state.usuario = usuario;
-
     _state.emailController.text = usuario.email;
     _state.nomeController.text = usuario.nome;
 
