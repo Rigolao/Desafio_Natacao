@@ -17,8 +17,6 @@ class LoginContent extends StatefulWidget {
 class _LoginContentState extends State<LoginContent> {
   @override
   Widget build(BuildContext context) {
-    final appController = Provider.of<AppController>(context, listen: false);
-
     return ChangeNotifierProvider(
         create: (context) => LoginController(),
         builder: (context, child) {

@@ -1,4 +1,3 @@
-  //import 'package:desafio_6_etapa/animation/HeartbeatIcon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -61,6 +60,7 @@ import '../animation/HeartbeatIcon.dart';
                       color: Colors.black,
                     ),
                   ),
+                  const SizedBox(height: 20),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -71,7 +71,7 @@ import '../animation/HeartbeatIcon.dart';
                             color: Colors.grey,
                             width: 1.0,
                           ),
-                          borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                          borderRadius: const BorderRadius.all(Radius.circular(8.0)),
                         ),
                         child: Padding(
                           padding: const EdgeInsets.symmetric(
@@ -79,7 +79,7 @@ import '../animation/HeartbeatIcon.dart';
                             horizontal: 16,
                           ),
                           child: TextField(
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontWeight: FontWeight.normal,
                               fontSize: 24.0,
                               color: Colors.black,
@@ -89,20 +89,19 @@ import '../animation/HeartbeatIcon.dart';
                               LengthLimitingTextInputFormatter(3),
                               FilteringTextInputFormatter.digitsOnly,
                             ],
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                               enabledBorder: InputBorder.none,
-                              // Remove o sublinhado
                               focusedBorder: InputBorder.none,
                             ),
                           ),
                         ),
                       ),
-                      SizedBox(width: 10),
+                      const SizedBox(width: 10),
                       Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           HeartbeatIcon(),
-                          Text(
+                          const Text(
                             'BPM',
                             style: TextStyle(
                               letterSpacing: 2.0,
@@ -120,15 +119,16 @@ import '../animation/HeartbeatIcon.dart';
             actions: <Widget>[
               TextButton(
                 onPressed: () {
-                  Navigator.of(context).pop(); // Fechar o diálogo
+                  Navigator.of(context).pop();
                 },
-                child: Text('Fechar'),
+                child: const Text('Fechar'),
               ),
               TextButton(
                 onPressed: () {
-                  // Lidar com a ação do botão OK aqui
+                  Navigator.of(context).pop();
+                  Navigator.pushNamed(context, '/cronometro');
                 },
-                child: Text('OK'),
+                child: const Text('OK'),
               ),
             ],
           );

@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => HomeController()), // Fornecendo o HomeController
+        ChangeNotifierProvider(create: (context) => HomeController()),
         ChangeNotifierProvider(create: (context) => AppController()),
       ],
       child: MaterialApp(
@@ -45,7 +45,7 @@ class MyApp extends StatelessWidget {
           '/treino': (context) => const AtletaTreinoContent(),
           '/cadastrar-usuario': (context) => const CadastrarUsuarioContent(),
           '/cadastrar-treino': (context) => const CadastrarTreinoContent(),
-          '/nova': (context) => const CronometroContent(),
+          '/cronometro': (context) => const CronometroContent(),
         }
       ),
     );

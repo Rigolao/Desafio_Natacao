@@ -1,5 +1,6 @@
 class TreinoState {
-  final int treinos;
+  bool isLoading;
+  int treinos;
 
-  TreinoState(this.treinos);
+  TreinoState({this.treinos = 1, this.isLoading = true});
 }

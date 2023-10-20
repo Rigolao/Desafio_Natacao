@@ -129,7 +129,9 @@ class HomeController extends ChangeNotifier {
 class Page2 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return const AtletaTreinoContent();
+    return const Center(
+      child: Text('Histórico de treinos'),
+    );
   }
 }
 

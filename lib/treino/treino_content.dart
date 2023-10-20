@@ -17,15 +17,22 @@ class _TreinoContentState extends State<TreinoContent> {
         builder: (context, child) {
           return Consumer<TreinoController>(
               builder: (context, controller, child) {
+            controller.inicializar(context);
+
+            if (controller.state.isLoading) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
             return Padding(
               padding: const EdgeInsets.all(16.0),
               child: controller.state.treinos > 0
-                  ? Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(10),
-                        border: Border.all(color: Colors.grey),
-                      ),
+                  ? Card(
+                elevation: 0,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  side: const BorderSide(color: Colors.grey, width: 0.5),
+                ),
                       child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Column(
@@ -56,7 +63,8 @@ class _TreinoContentState extends State<TreinoContent> {
                               Align(
                                   alignment: Alignment.bottomRight,
                                   child: FilledButton(
-                                      onPressed: () => controller.participar(context),
+                                      onPressed: () =>
+                                          controller.participar(context),
                                       child: const Text('Participar')))
                             ],
                           )),
