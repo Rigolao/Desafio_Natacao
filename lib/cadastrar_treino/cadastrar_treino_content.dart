@@ -30,19 +30,23 @@ class CadastrarTreinoContent extends StatelessWidget {
                       alignment: WrapAlignment.center,
                       runSpacing: 16,
                       children: [
-                        Text(
-                          controller.state.horarioController.text.isEmpty
-                              ? 'Nenhum horário selecionado'
-                              : controller.state.horarioController.text,
-                          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                        ),
-                        ElevatedButton(
-                          onPressed: () {
-                            controller.selectDateAndTime(context);
-                          },
-                          child: Text(
-                            'Selecionar Data e Horário',
-                          ),
+                        Column(
+                          children: [
+                            Text(
+                              controller.state.horarioController.text.isEmpty
+                                  ? 'Nenhum horário selecionado'
+                                  : controller.state.horarioController.text,
+                              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                            ),
+                            ElevatedButton(
+                              onPressed: () {
+                                controller.selectDateAndTime(context);
+                              },
+                              child: Text(
+                                'Selecionar Data e Horário',
+                              ),
+                            ),
+                          ],
                         ),
                         // Use um TextField para o campo de descrição
                         TextField(
