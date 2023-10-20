@@ -7,6 +7,7 @@ class LoginState {
   String email;
   String password;
   bool showPassword;
+  String error;
 
   LoginState(
     this.formKey,
@@ -15,5 +16,6 @@ class LoginState {
     this.email,
     this.password,
     this.showPassword,
+    this.error,
   );
 }

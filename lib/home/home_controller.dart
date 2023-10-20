@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:desafio_6_etapa/cadastrar_usuario/cadastrar_usuario_content.dart';
+import 'package:desafio_6_etapa/perfil/perfil_content.dart';
 import 'package:flutter/material.dart';
 
 import '../atletas_treino/atletas_treino_content.dart';
@@ -14,14 +15,14 @@ class HomeController extends ChangeNotifier {
   final state = HomeState('Treinos', 0, [
     const TreinoContent(),
     Page2(),
-    Page3(),
+    const PerfilContent()
   ], []);
 
   HomeState get _state => state;
 
   void inicializar(TipoUsuario tipoUsuario) {
     if (_state.isLoading) {
-      Timer(const Duration(seconds: 2), () {
+      Timer(const Duration(seconds: 1), () {
         if (tipoUsuario == TipoUsuario.ADMINISTRADOR) {
           state.usuarios.addAll([
             Usuario(
@@ -132,9 +133,3 @@ class Page2 extends StatelessWidget {
   }
 }
 
-class Page3 extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return const Center(child: Text('Perfil'));
-  }
-}
