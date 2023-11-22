@@ -1,9 +1,10 @@
 import 'package:desafio_6_etapa/atletas_treino/atletas_treino_content.dart';
 import 'package:desafio_6_etapa/cadastrar_treino/cadastrar_treino_content.dart';
 import 'package:desafio_6_etapa/cronometro/cronometro_content.dart';
+import 'package:desafio_6_etapa/firebase_options.dart';
 import 'package:desafio_6_etapa/login/login_content.dart';
 import 'package:desafio_6_etapa/theme/theme.g.dart';
-import 'package:desafio_6_etapa/treino/treino_content.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -12,7 +13,12 @@ import 'cadastrar_usuario/cadastrar_usuario_content.dart';
 import 'home/home_content.dart';
 import 'home/home_controller.dart';
 
-void main() {
+void  main() async {
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.android
+  );
+
   runApp(ChangeNotifierProvider(
     create: (context) => AppController(),
     builder: (context, child) {

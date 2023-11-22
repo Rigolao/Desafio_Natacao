@@ -1,11 +1,12 @@
 import 'package:desafio_6_etapa/login/login_state.dart';
-import 'package:desafio_6_etapa/shared/show_alert_dialog.dart';
+import 'package:desafio_6_etapa/services/flutter_fire_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../app/app_controller.dart';
 import '../entity/tipo_usuario.dart';
 import '../entity/usuario.dart';
+import '../models/user_data.dart';
 
 class LoginController extends ChangeNotifier {
   final _state = LoginState(GlobalKey<FormState>(), TextEditingController(),
@@ -38,56 +39,41 @@ class LoginController extends ChangeNotifier {
     return null;
   }
 
-  void logar(BuildContext context, GlobalKey<FormState> formKey) {
+  void _resetForm() {
+    state.emailController.clear();
+    state.senhaController.clear();
+  }
+
+
+  void logar(BuildContext context, GlobalKey<FormState> formKey) async {
+
     if (formKey.currentState!.validate()) {
-      final AppController appController =
-          Provider.of<AppController>(context, listen: false);
+      final AppController appController = Provider.of<AppController>(context, listen: false);
+
+      final email = state.emailController.text;
+      final senha = state.senhaController.text;
+
       Usuario usuario;
 
-      if (state.emailController.text != 'matheus@email.com' &&
-          state.emailController.text != 'joao@email.com' &&
-          state.emailController.text != 'diego@email.com') {
-        _state.error = 'Usuário não encontrado';
+      final user = await FlutterFireAuth(context).signInWithEmailAndPassword(email, senha);
 
-        showAlertDialog(context, _state.error, () {
-          clearError();
-        });
+      print(user);
 
-        notifyListeners();
-        return;
+      if (user != null) {
+        usuario = Usuario(
+                nome: 'Diego',
+                email: state.email,
+                senha: state.password,
+                tipoUsuario: TipoUsuario.ATLETA,
+              );
+        appController.setUsuario(usuario);
+        _resetForm();
+        _navegacaoParaHome(user, context);
       }
-
-      if (state.emailController.text == 'matheus@email.com') {
-        usuario = Usuario(
-          nome: 'Matheus',
-          email: state.email,
-          senha: state.password,
-          tipoUsuario: TipoUsuario.ADMINISTRADOR,
-        );
-      } else if (state.emailController.text == 'joao@email.com') {
-        usuario = Usuario(
-          nome: 'João',
-          email: state.email,
-          senha: state.password,
-          tipoUsuario: TipoUsuario.TREINADOR,
-        );
-      } else {
-        usuario = Usuario(
-          nome: 'Diego',
-          email: state.email,
-          senha: state.password,
-          tipoUsuario: TipoUsuario.ATLETA,
-        );
-      }
-
-      appController.setUsuario(usuario);
-
-      Navigator.of(context).pushReplacementNamed('/home');
     }
   }
 
-  void clearError() {
-    _state.error = '';
-    notifyListeners();
+  void _navegacaoParaHome (UserData user, BuildContext context) {
+    Navigator.of(context).pushReplacementNamed('/home');
   }
 }
