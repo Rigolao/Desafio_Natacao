@@ -4,7 +4,6 @@ import 'package:desafio_6_etapa/cadastrar_usuario/cadastrar_usuario_content.dart
 import 'package:desafio_6_etapa/perfil/perfil_content.dart';
 import 'package:flutter/material.dart';
 
-import '../atletas_treino/atletas_treino_content.dart';
 import '../entity/tipo_usuario.dart';
 import '../entity/usuario.dart';
 import '../treino/treino_content.dart';
@@ -105,8 +104,9 @@ class HomeController extends ChangeNotifier {
                             BottomSheetButton(
                                 icone: Icons.create,
                                 texto: 'Cadastrar Treino',
-                                onPressed: () => {
-                                  Navigator.of(context).pushNamed('/cadastrar-treino')
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                  Navigator.of(context).pushNamed('/cadastrar-treino');
                                 }),
                           ],
                         ),

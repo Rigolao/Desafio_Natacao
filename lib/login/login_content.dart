@@ -19,8 +19,8 @@ class _LoginContentState extends State<LoginContent> {
         builder: (context, child) {
           return Consumer<LoginController>(
               builder: (context, controller, child) {
-            return Material(
-              child: Stack(
+            return Scaffold(
+              body: Stack(
                 children: [
                   Container(
                     decoration: const BoxDecoration(

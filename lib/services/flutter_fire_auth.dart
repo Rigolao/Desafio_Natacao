@@ -20,8 +20,10 @@ class FlutterFireAuth {
    try {
      final credencial = await _auth.signInWithEmailAndPassword(email: email, password: senha);
 
-     final dadoUsuario = await _cloud.collection('tipoUsuario').doc(credencial.user!.uid).get();
-     final tipoUsuario = dadoUsuario.get('tipoUsuario');
+     // final dadoUsuario = await _cloud.collection('tipoUsuario').doc(credencial.user!.uid).get();
+     // final tipoUsuario = dadoUsuario.get('tipoUsuario');
+
+     final tipoUsuario = TipoUsuario.TREINADOR;
 
      return UserData(
        name: credencial.user?.displayName,

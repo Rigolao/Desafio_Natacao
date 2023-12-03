@@ -1,6 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:desafio_6_etapa/entity/treino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
+import '../app/app_controller.dart';
+import '../treino/treino_controller.dart';
 import 'cadastrar_treino_state.dart';
 
 class CadastrarTreinoController extends ChangeNotifier {
@@ -12,17 +17,167 @@ class CadastrarTreinoController extends ChangeNotifier {
 
   CadastrarTreinoState get _state => state;
 
-  void cadastrarTreino() {
-    if (_state.formKey.currentState!.validate()) {
-      _state.isLoading = true;
-      notifyListeners();
-      Future.delayed(Duration(seconds: 2), () {
+  void inicializar(BuildContext context) {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      if (_state.isLoading) {
         _state.isLoading = false;
-        _state.isSucesso = true;
-        _state.mensagem = 'Treino cadastrado com sucesso!';
+
+        final AppController appController =
+            Provider.of<AppController>(context, listen: false);
+
+        if (appController.state.treinoSelecionado != null) {
+          _state.treino = appController.state.treinoSelecionado;
+          _state.descricaoController.text =
+              appController.state.treinoSelecionado!.descricao;
+          _state.horarioController.text =
+              appController.state.treinoSelecionado!.horario;
+        }
+
         notifyListeners();
-      });
+      }
+    });
+  }
+
+  void cadastrarTreino(BuildContext context, Function fetchTreinos) {
+    if (_state.formKey.currentState!.validate()) {
+      final AppController appController =
+          Provider.of<AppController>(context, listen: false);
+
+      if (appController.state.treinoSelecionado != null) {
+        atualizarTreino(context, appController.state.treinoSelecionado!, fetchTreinos);
+      } else {
+        salvarTreino(context, fetchTreinos);
+      }
     }
+  }
+
+  void salvarTreino(BuildContext context, Function fetchTreinos) {
+    Treino treino = Treino(
+        descricao: _state.descricaoController.text,
+        horario: _state.horarioController.text,
+        treinadorUUID: '1234',
+        treinador: 'Matheus');
+
+    var db = FirebaseFirestore.instance;
+    _state.isLoading = true;
+    notifyListeners();
+
+    db.collection('treinos').doc().set(treino.toJson()).then((value) {
+      _state.isLoading = false;
+      _state.isSucesso = true;
+      _state.mensagem = 'Treino cadastrado com sucesso!';
+
+      notifyListeners();
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(_state.mensagem),
+          duration: Duration(seconds: 2),
+        ),
+      );
+
+      fetchTreinos();
+
+      Navigator.pop(context);
+
+      TreinoController treinoController =
+          Provider.of<TreinoController>(context, listen: false);
+      treinoController.inicializar(context);
+    }).catchError((error) {
+      _state.isLoading = false;
+      _state.isSucesso = false;
+      _state.mensagem = 'Erro ao cadastrar treino: $error';
+
+      notifyListeners();
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Erro ao cadastrar treino: $error'),
+          duration: Duration(seconds: 2),
+        ),
+      );
+    });
+  }
+
+  void atualizarTreino(BuildContext context, Treino treino, Function fetchTreinos) {
+    treino.descricao = _state.descricaoController.text;
+    treino.horario = _state.horarioController.text;
+
+    var db = FirebaseFirestore.instance;
+    _state.isLoading = true;
+
+    db
+        .collection('treinos')
+        .where('UUID', isEqualTo: treino.UUID)
+        .get()
+        .then((querySnapshot) {
+      if (querySnapshot.docs.isNotEmpty) {
+        var documentoParaAtualizar = querySnapshot.docs.first.reference;
+
+        documentoParaAtualizar.update({
+          'descricao': treino.descricao,
+          'horario': treino.horario,
+        }).then((_) {
+          _state.isLoading = false;
+          _state.isSucesso = true;
+          _state.mensagem = 'Treino atualizado com sucesso!';
+
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(_state.mensagem),
+              duration: Duration(seconds: 2),
+            ),
+          );
+
+          final AppController appController =
+              Provider.of<AppController>(context, listen: false);
+          appController.setTreinoSelecionado(null);
+
+          notifyListeners();
+
+          Navigator.pop(context);
+
+          fetchTreinos();
+        }).catchError((error) {
+          _state.isLoading = false;
+          _state.isSucesso = false;
+          _state.mensagem = 'Erro ao atualizar treino: $error';
+
+          notifyListeners();
+
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(_state.mensagem),
+              duration: Duration(seconds: 2),
+            ),
+          );
+        });
+      } else {
+        _state.isLoading = false;
+        _state.isSucesso = false;
+        _state.mensagem = 'Treino com UUID ${treino.UUID} não encontrado.';
+
+        notifyListeners();
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(_state.mensagem),
+            duration: Duration(seconds: 2),
+          ),
+        );
+      }
+    }).catchError((error) {
+      _state.isLoading = false;
+      _state.isSucesso = false;
+      _state.mensagem = 'Erro ao buscar treino: $error';
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(_state.mensagem),
+          duration: Duration(seconds: 2),
+        ),
+      );
+    });
   }
 
   Future<void> selectDateAndTime(BuildContext context) async {
@@ -48,7 +203,8 @@ class CadastrarTreinoController extends ChangeNotifier {
           pickedTime.minute,
         );
 
-        final formattedDateTime = DateFormat('dd/MM/yyyy HH:mm').format(selectedDateTime);
+        final formattedDateTime =
+            DateFormat('dd/MM/yyyy HH:mm').format(selectedDateTime);
 
         _state.horarioController.text = formattedDateTime;
       }

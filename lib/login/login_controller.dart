@@ -62,9 +62,9 @@ class LoginController extends ChangeNotifier {
       if (user != null) {
         usuario = Usuario(
                 nome: 'Diego',
-                email: state.email,
-                senha: state.password,
-                tipoUsuario: TipoUsuario.ATLETA,
+                email: user.email!,
+                senha: '123456',
+                tipoUsuario: user.tipoUsuario!,
               );
         appController.setUsuario(usuario);
         _resetForm();

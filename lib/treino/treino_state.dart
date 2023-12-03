@@ -1,6 +1,9 @@
+import 'package:desafio_6_etapa/entity/treino.dart';
+
 class TreinoState {
   bool isLoading;
-  int treinos;
+  List<Treino> treinos = List<Treino>.empty();
+  String mensagem = '';
 
-  TreinoState({this.treinos = 1, this.isLoading = true});
+  TreinoState({this.isLoading = true});
 }

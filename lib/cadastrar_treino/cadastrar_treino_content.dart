@@ -4,7 +4,8 @@ import 'package:provider/provider.dart';
 import 'cadastrar_treino_controller.dart';
 
 class CadastrarTreinoContent extends StatelessWidget {
-  const CadastrarTreinoContent({super.key});
+  final Function fetchTreinos;
+  const CadastrarTreinoContent({super.key, required this.fetchTreinos});
 
   @override
   Widget build(BuildContext context) {
@@ -13,6 +14,11 @@ class CadastrarTreinoContent extends StatelessWidget {
       builder: (context, child) {
         return Consumer<CadastrarTreinoController>(
           builder: (context, controller, child) {
+
+            controller.inicializar(context);
+
+            if(controller.state.isLoading) return const Center(child: CircularProgressIndicator());
+
             return Scaffold(
               appBar: AppBar(
                 backgroundColor: Theme.of(context).colorScheme.primary,
@@ -21,54 +27,62 @@ class CadastrarTreinoContent extends StatelessWidget {
                   style: TextStyle(color: Colors.white),
                 ),
               ),
-              body: SingleChildScrollView(
-                child: Form(
-                  key: controller.state.formKey,
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Wrap(
-                      alignment: WrapAlignment.center,
-                      runSpacing: 16,
-                      children: [
-                        Column(
-                          children: [
-                            Text(
-                              controller.state.horarioController.text.isEmpty
-                                  ? 'Nenhum horário selecionado'
-                                  : controller.state.horarioController.text,
-                              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                            ),
-                            ElevatedButton(
-                              onPressed: () {
-                                controller.selectDateAndTime(context);
-                              },
-                              child: Text(
-                                'Selecionar Data e Horário',
+              body: controller.state.isLoading
+                  ? const Center(child: CircularProgressIndicator())
+                  : SingleChildScrollView(
+                      child: Form(
+                        key: controller.state.formKey,
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Wrap(
+                            alignment: WrapAlignment.center,
+                            runSpacing: 16,
+                            children: [
+                              Column(
+                                children: [
+                                  Text(
+                                    controller.state.horarioController.text
+                                            .isEmpty
+                                        ? 'Nenhum horário selecionado'
+                                        : controller
+                                            .state.horarioController.text,
+                                    style: const TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      controller.selectDateAndTime(context);
+                                    },
+                                    child: const Text(
+                                      'Selecionar Data e Horário',
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ),
-                          ],
-                        ),
-                        // Use um TextField para o campo de descrição
-                        TextField(
-                          controller: controller.state.descricaoController,
-                          decoration: const InputDecoration(
-                            border: OutlineInputBorder(),
-                            labelText: 'Descrição',
-                            hintText: 'Digite a descrição',
+                              TextField(
+                                controller:
+                                    controller.state.descricaoController,
+                                decoration: const InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  labelText: 'Descrição',
+                                  hintText: 'Digite a descrição',
+                                ),
+                                maxLines: 6,
+                              ),
+                              FilledButton(
+                                onPressed: () {
+                                  controller.cadastrarTreino(context, fetchTreinos);
+                                },
+                                child: Text(controller.state.treino != null
+                                    ? 'Atualizar Treino'
+                                    : 'Cadastrar Treino'),
+                              ),
+                            ],
                           ),
-                          maxLines: 6,
                         ),
-                        FilledButton(
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                          child: Text('Cadastrar'),
-                        ),
-                      ],
+                      ),
                     ),
-                  ),
-                ),
-              ),
             );
           },
         );

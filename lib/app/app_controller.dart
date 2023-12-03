@@ -1,4 +1,5 @@
 import 'package:desafio_6_etapa/entity/tipo_usuario.dart';
+import 'package:desafio_6_etapa/entity/treino.dart';
 import 'package:desafio_6_etapa/finalizar_cadastro/finalizar_cadastro_content.dart';
 import 'package:flutter/material.dart';
 
@@ -12,6 +13,11 @@ class AppController extends ChangeNotifier {
 
   void setUsuario(Usuario usuario) {
     _state.usuario = usuario;
+    notifyListeners();
+  }
+
+  void setTreinoSelecionado(Treino? treino) {
+    _state.treinoSelecionado = treino;
     notifyListeners();
   }
 

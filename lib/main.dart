@@ -15,8 +15,10 @@ import 'home/home_controller.dart';
 
 void  main() async {
 
+  WidgetsFlutterBinding.ensureInitialized();
+
   await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.android
+    options: DefaultFirebaseOptions.ios
   );
 
   runApp(ChangeNotifierProvider(
@@ -50,7 +52,7 @@ class MyApp extends StatelessWidget {
           '/home': (context) => const HomeContent(),
           '/treino': (context) => const AtletaTreinoContent(),
           '/cadastrar-usuario': (context) => const CadastrarUsuarioContent(),
-          '/cadastrar-treino': (context) => const CadastrarTreinoContent(),
+          '/cadastrar-treino': (context) => CadastrarTreinoContent(fetchTreinos: () {}),
           '/cronometro': (context) => const CronometroContent(),
         }
       ),
