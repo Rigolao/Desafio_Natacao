@@ -9,8 +9,9 @@ import '../animation/HeartbeatIcon.dart';
 class PersonCard extends StatelessWidget {
   final bool rating;
   final Usuario usuario;
+  final Function()? callback;
 
-  const PersonCard({required this.rating, required this.usuario, super.key});
+  const PersonCard({required this.rating, required this.usuario, super.key, this.callback});
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +42,7 @@ class PersonCard extends StatelessWidget {
                         focusColor: Colors.blue[200],
                         onPressed: () {
                           if (usuario != null) {
-                            _showModal(context);
+                            _showModal(context, callback);
                           }
                         },
                         icon: const Icon(Icons.timer_outlined),
@@ -51,7 +52,7 @@ class PersonCard extends StatelessWidget {
             )));
   }
 
-  void _showModal(BuildContext context) {
+  void _showModal(BuildContext context, Function()? callback) {
     TextEditingController _controller = TextEditingController();
 
     batimentoCard(context, () {
@@ -59,7 +60,7 @@ class PersonCard extends StatelessWidget {
       Navigator.pushNamed(context, '/cronometro', arguments: {
         'atleta': usuario,
         'ritmoInicial': _controller.text,
-      });
+      }).then((value) => callback);
     }, _controller);
   }
 }

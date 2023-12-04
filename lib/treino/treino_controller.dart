@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:desafio_6_etapa/entity/tipo_usuario.dart';
 import 'package:desafio_6_etapa/entity/treino.dart';
 import 'package:desafio_6_etapa/treino/treino_state.dart';
 import 'package:flutter/material.dart';
@@ -128,5 +129,12 @@ class TreinoController extends ChangeNotifier {
       () => inicializar;
       notifyListeners();
     });
+  }
+
+  bool isTreinador(BuildContext context) {
+    final AppController appController =
+        Provider.of<AppController>(context, listen: false);
+
+    return appController.state.usuario!.tipoUsuario == TipoUsuario.TREINADOR;
   }
 }

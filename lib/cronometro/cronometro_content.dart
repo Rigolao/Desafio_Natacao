@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:developer' as developer;
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:desafio_6_etapa/app/app_controller.dart';
 import 'package:desafio_6_etapa/entity/atleta.dart';
 import 'package:desafio_6_etapa/entity/usuario.dart';
 import 'package:desafio_6_etapa/shared/batimento_dialog.dart';
@@ -9,6 +10,7 @@ import 'package:desafio_6_etapa/shared/person_card.dart';
 import 'package:desafio_6_etapa/theme/theme.g.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 import '../entity/tempo_volta.dart';
 
@@ -136,7 +138,11 @@ class _CronometroContentState extends State<CronometroContent> {
   }
 
   Future<void> salvaFirebase() async {
+    final AppController appController =
+        Provider.of<AppController>(context, listen: false);
+
     await _db.collection('avaliacoes').doc().set({
+      'treinoUUID': appController.state.treinoSelecionado!.UUID,
       'atletaUUID': widget.atleta!.id,
       'ritmoInicial': widget.ritmoInicial,
       'ritmoFinal': _controller.text,

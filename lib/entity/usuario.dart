@@ -19,4 +19,13 @@ class Usuario {
       'tipoUsuario': ConversorEnum.converterEnumParaString(tipoUsuario)
     };
   }
+
+  factory Usuario.fromMap(Map<String, dynamic> map, String id) {
+    return Usuario(
+      id: id,
+      nome: map['nome'],
+      email: map['email'],
+      tipoUsuario: ConversorEnum.converterStringParaEnum(map['tipoUsuario']),
+    );
+  }
 }

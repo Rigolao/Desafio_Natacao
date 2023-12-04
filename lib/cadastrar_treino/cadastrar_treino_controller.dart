@@ -52,11 +52,14 @@ class CadastrarTreinoController extends ChangeNotifier {
   }
 
   void salvarTreino(BuildContext context, Function fetchTreinos) {
+    final AppController appController =
+    Provider.of<AppController>(context, listen: false);
+
     Treino treino = Treino(
         descricao: _state.descricaoController.text,
         horario: _state.horarioController.text,
-        treinadorUUID: '1234',
-        treinador: 'Matheus');
+        treinadorUUID: appController.state.usuario!.id!,
+        treinador: appController.state.usuario!.nome);
 
     var db = FirebaseFirestore.instance;
     _state.isLoading = true;

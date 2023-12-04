@@ -41,7 +41,8 @@ class TreinoContent extends StatelessWidget {
                                         title: Text('Treino ${index + 1}'),
                                         subtitle: Text(controller
                                             .state.treinos[index].treinador),
-                                        trailing: PopupMenuButton<String>(
+                                        trailing: controller.isTreinador(context)
+                                            ? PopupMenuButton<String>(
                                           onSelected: (value) {
                                             if (value == 'editar') {
                                               controller.editarTreino(
@@ -66,7 +67,7 @@ class TreinoContent extends StatelessWidget {
                                               child: Text('Excluir'),
                                             ),
                                           ],
-                                        ),
+                                        ) : null,
                                       ),
                                       Container(
                                         height: 200,

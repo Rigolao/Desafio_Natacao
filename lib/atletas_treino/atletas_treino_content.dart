@@ -22,7 +22,14 @@ class _AtletaTreinoContentState extends State<AtletaTreinoContent> {
         builder: (context, child) {
           return Consumer<AtletasTreinoController>(
               builder: (context, controller, child) {
-            return Scaffold(
+
+                controller.inicializar(context);
+
+                if (controller.state.isLoading) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+
+                return Scaffold(
               appBar: AppBar(
                 iconTheme: const IconThemeData(color: Colors.white),
                 title:
@@ -39,20 +46,20 @@ class _AtletaTreinoContentState extends State<AtletaTreinoContent> {
                         children: [
                           Container(
                             color: lightColorScheme.primary,
-                            child: const Padding(
-                              padding: EdgeInsets.all(8.0),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
                               child: Column(
                                 children: [
                                   Row(
                                     children: [
-                                      Icon(Icons.date_range,
+                                      const Icon(Icons.date_range,
                                           color: Colors.white),
-                                      SizedBox(
+                                      const SizedBox(
                                         width: 10,
                                       ),
                                       Text(
-                                        'Segunda-Feira, 14 de outubro de 2023',
-                                        style: TextStyle(color: Colors.white),
+                                          controller.state.treino!.horario,
+                                        style: const TextStyle(color: Colors.white),
                                       ),
                                     ],
                                   ),
@@ -67,9 +74,9 @@ class _AtletaTreinoContentState extends State<AtletaTreinoContent> {
                               child: PersonCard(
                                 rating: false,
                                 usuario: Usuario(
-                                  id: '1',
-                                  nome: 'João da Silva',
-                                  email: 'joao@email.com',
+                                  id: controller.state.treino!.UUID,
+                                  nome: controller.state.treino!.treinador,
+                                  email: '',
                                   senha: '',
                                   tipoUsuario: TipoUsuario.TREINADOR,
                               )),
@@ -97,16 +104,17 @@ class _AtletaTreinoContentState extends State<AtletaTreinoContent> {
                                   child: ListView.builder(
                                     physics:
                                         const NeverScrollableScrollPhysics(),
-                                    itemCount: 20,
+                                    itemCount: controller.state.atletas.length,
                                     itemBuilder: (itemBuilder, index) {
                                       return PersonCard(
                                           rating: true,
+                                          callback: () => controller.inicializar(context),
                                           usuario: Usuario(
-                                            id: '1',
-                                            nome: 'João da Silva',
-                                            email: 'joao@email.com',
+                                            id: controller.state.atletas[index].id,
+                                            nome: controller.state.atletas[index].nome,
+                                            email: controller.state.atletas[index].email,
                                             senha: '',
-                                            tipoUsuario: TipoUsuario.ATLETA,
+                                            tipoUsuario: controller.state.atletas[index].tipoUsuario,
                                           ));
                                     },
                                   ),
