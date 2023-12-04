@@ -87,8 +87,7 @@ class TreinoContent extends StatelessWidget {
                                       Align(
                                           alignment: Alignment.bottomRight,
                                           child: ElevatedButton(
-                                              onPressed: () => {},
-                                              //controller.participar(context),
+                                              onPressed: () => controller.participar(context, controller.state.treinos[index]),
                                               child: const Text('Participar')))
                                     ],
                                   )),

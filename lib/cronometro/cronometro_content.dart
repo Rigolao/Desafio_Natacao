@@ -1,13 +1,24 @@
 import 'dart:async';
 import 'dart:developer' as developer;
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:desafio_6_etapa/entity/atleta.dart';
+import 'package:desafio_6_etapa/entity/usuario.dart';
+import 'package:desafio_6_etapa/shared/batimento_dialog.dart';
 import 'package:desafio_6_etapa/shared/person_card.dart';
 import 'package:desafio_6_etapa/theme/theme.g.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import '../entity/tempo_volta.dart';
+
 class CronometroContent extends StatefulWidget {
-  const CronometroContent({super.key});
+  Usuario? atleta;
+  String ritmoInicial;
+
+  CronometroContent({super.key, required this.ritmoInicial, this.atleta}) {
+    atleta ??= Usuario(nome: "Vazio", email: "vazio", senha: "vazio");
+  }
 
   @override
   State<CronometroContent> createState() => _CronometroContentState();
@@ -19,6 +30,8 @@ class _CronometroContentState extends State<CronometroContent> {
   bool comecar = false;
   List<TempoVolta> intervalos = [];
 
+  final TextEditingController _controller = TextEditingController();
+
   TempoVolta? melhorVolta;
   TempoVolta? piorVolta;
 
@@ -28,17 +41,23 @@ class _CronometroContentState extends State<CronometroContent> {
   int indexPiorVolta = 0;
   int indexMelhorVolta = 0;
 
+  final _db = FirebaseFirestore.instance;
+
   TempoVolta criarTempoVolta(List<TempoVolta> intervalos, int tempo) {
     if (intervalos.isEmpty) {
-      return TempoVolta(tempo, tempo, intervalos.length + 1,
-          isMelhorTempo(tempo), isPiorTempo(tempo));
+      return TempoVolta(
+          tempo: tempo,
+          tempoVolta: tempo,
+          volta: intervalos.length + 1,
+          isMelhorVolta: isMelhorTempo(tempo),
+          isPiorVolta: isPiorTempo(tempo));
     } else {
       return TempoVolta(
-          tempo,
-          tempo - intervalos.first.tempo,
-          intervalos.length + 1,
-          isMelhorTempo(tempo - intervalos.first.tempo),
-          isPiorTempo(tempo - intervalos.first.tempo));
+          tempo: tempo,
+          tempoVolta: tempo - intervalos.first.tempo,
+          volta: intervalos.length + 1,
+          isMelhorVolta: isMelhorTempo(tempo - intervalos.first.tempo),
+          isPiorVolta: isPiorTempo(tempo - intervalos.first.tempo));
     }
   }
 
@@ -82,14 +101,15 @@ class _CronometroContentState extends State<CronometroContent> {
   }
 
   void parar() {
-    timer!.cancel();
+    if (timer != null) timer!.cancel();
     setState(() {
       comecar = false;
     });
   }
 
   void reset() {
-    timer!.cancel();
+    if (timer != null) timer!.cancel();
+
     setState(() {
       millisegundos = 0;
 
@@ -111,8 +131,41 @@ class _CronometroContentState extends State<CronometroContent> {
     timer = Timer.periodic(const Duration(milliseconds: 1), (timer) {
       setState(() {
         millisegundos = timer.tick;
-
       });
+    });
+  }
+
+  Future<void> salvaFirebase() async {
+    await _db.collection('avaliacoes').doc().set({
+      'atletaUUID': widget.atleta!.id,
+      'ritmoInicial': widget.ritmoInicial,
+      'ritmoFinal': _controller.text,
+      'intervalos': intervalos.map((e) => e.toJson()).toList(),
+      'tempoTotal': millisegundos,
+      'data': DateTime.now()
+    }).then(
+        (value) => Navigator.popUntil(context, ModalRoute.withName('/treino')));
+  }
+
+  void salvarAvaliacao(BuildContext context) async {
+    parar();
+    batimentoCard(context, salvaFirebase, _controller);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      final Map<String, dynamic>? arguments =
+          ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
+
+      if (arguments != null) {
+        setState(() {
+          widget.atleta = arguments['atleta'];
+          widget.ritmoInicial = arguments['ritmoInicial'] ?? '';
+        });
+      }
     });
   }
 
@@ -133,9 +186,9 @@ class _CronometroContentState extends State<CronometroContent> {
           padding: const EdgeInsets.all(16.0),
           child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                const PersonCard(rating: false),
+                PersonCard(rating: false, usuario: widget.atleta!),
                 Container(
                   height: 350.0,
                   decoration: BoxDecoration(
@@ -144,7 +197,6 @@ class _CronometroContentState extends State<CronometroContent> {
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    // Alinhar à esquerda
                     children: [
                       const Padding(
                         padding: EdgeInsets.all(16.0),
@@ -156,8 +208,7 @@ class _CronometroContentState extends State<CronometroContent> {
                               style: TextStyle(
                                 color: Colors.black,
                                 fontSize: 16.0,
-                                fontWeight: FontWeight
-                                    .bold,
+                                fontWeight: FontWeight.bold,
                               ),
                             ),
                             Text(
@@ -165,8 +216,7 @@ class _CronometroContentState extends State<CronometroContent> {
                               style: TextStyle(
                                 color: Colors.black,
                                 fontSize: 16.0,
-                                fontWeight: FontWeight
-                                    .bold,
+                                fontWeight: FontWeight.bold,
                               ),
                             ),
                             Text(
@@ -174,8 +224,7 @@ class _CronometroContentState extends State<CronometroContent> {
                               style: TextStyle(
                                 color: Colors.black,
                                 fontSize: 16.0,
-                                fontWeight: FontWeight
-                                    .bold, // Negrito para o rótulo "Tempo da Volta"
+                                fontWeight: FontWeight.bold,
                               ),
                             ),
                           ],
@@ -244,7 +293,6 @@ class _CronometroContentState extends State<CronometroContent> {
                         else
                           return Colors.red;
                       }(),
-                      // border: Border.all(color: Colors.grey, width: 0.5),
                       borderRadius: const BorderRadius.only(
                           topLeft: Radius.circular(12.0),
                           topRight: Radius.circular(12.0)),
@@ -302,18 +350,10 @@ class _CronometroContentState extends State<CronometroContent> {
                                 style: TextStyle(color: Colors.black))))
                   ],
                 ),
+                FilledButton(
+                    onPressed: () => salvarAvaliacao(context),
+                    child: const Text('Finalizar')),
               ]),
         )));
   }
-}
-
-class TempoVolta {
-  int tempo;
-  int tempoVolta;
-  int volta;
-  bool isMelhorVolta;
-  bool isPiorVolta;
-
-  TempoVolta(this.tempo, this.tempoVolta, this.volta, this.isMelhorVolta,
-      this.isPiorVolta);
 }

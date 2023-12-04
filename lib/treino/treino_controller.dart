@@ -38,7 +38,11 @@ class TreinoController extends ChangeNotifier {
     }
   }
 
-  void participar(BuildContext context) {
+  void participar(BuildContext context, Treino treino) {
+    final AppController appController =
+    Provider.of<AppController>(context, listen: false);
+    appController.setTreinoSelecionado(treino);
+
     Navigator.of(context).pushNamed('/treino');
   }
 
