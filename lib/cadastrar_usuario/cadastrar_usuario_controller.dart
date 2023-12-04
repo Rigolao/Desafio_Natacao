@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../entity/tipo_usuario.dart';
 import '../entity/usuario.dart';
+import '../services/flutter_fire_auth.dart';
 import 'cadastrar_usuario_state.dart';
 
 class CadastrarUsuarioController extends ChangeNotifier {
@@ -9,20 +10,36 @@ class CadastrarUsuarioController extends ChangeNotifier {
 
   CadastrarUsuarioState get _state => state;
 
-  void addUsuario(final List<Usuario> listaUsuarios) {
-    final Usuario usuario = Usuario(
-      nome: _state.nomeController.text,
-      email: _state.emailController.text,
-      senha: _state.senhaController.text,
-      tipoUsuario: _state.usuario.tipoUsuario,
-    );
+  Future<void> addUsuario(final List<Usuario> listaUsuarios, BuildContext context) async {
+    try {
+      final Usuario usuario = Usuario(
+        nome: _state.nomeController.text,
+        email: _state.emailController.text,
+        tipoUsuario: _state.usuario.tipoUsuario,
+      );
 
-    listaUsuarios.add(usuario);
+      debugPrint(usuario.tipoUsuario.toString().split('.').last);
 
-    notifyListeners();
+      // Use await para esperar a conclusão da função assíncrona
+      FlutterFireAuth.createUserWithEmailAndPassword(usuario);
+
+      listaUsuarios.add(usuario);
+
+      notifyListeners();
+    } catch (e) {
+      print('Erro ao adicionar usuário: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Erro ao adicionar usuário: $e'),
+          )
+      );
+    }
   }
 
-  void editarUsuario(final List<Usuario> listaUsuarios, int index) {
+
+
+
+  Future<void> editarUsuario(final List<Usuario> listaUsuarios, int index) async {
     final Usuario usuario = Usuario(
       nome: _state.nomeController.text,
       email: _state.emailController.text,
@@ -35,10 +52,21 @@ class CadastrarUsuarioController extends ChangeNotifier {
     notifyListeners();
   }
 
-  void atualizarTipoUsuario(bool isAdministrador) {
-    _state.usuario.tipoUsuario = isAdministrador
-        ? TipoUsuario.ADMINISTRADOR
-        : TipoUsuario.TREINADOR;
+  void atualizarTipoUsuario(int index) {
+    debugPrint(index.toString());
+    switch (index) {
+      case 0:
+        _state.usuario.tipoUsuario = TipoUsuario.ADMINISTRADOR;
+        break;
+      case 1:
+        _state.usuario.tipoUsuario = TipoUsuario.TREINADOR;
+        break;
+      case 2:
+        _state.usuario.tipoUsuario = TipoUsuario.ATLETA;
+        break;
+      default:
+        throw ArgumentError('Índice inválido: $index');
+    }
     notifyListeners();
   }
 

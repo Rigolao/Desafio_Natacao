@@ -1,7 +1,5 @@
-import 'package:desafio_6_etapa/entity/atleta.dart';
 import 'package:desafio_6_etapa/shared/person_card.dart';
 import 'package:desafio_6_etapa/theme/theme.g.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -69,7 +67,7 @@ class _AtletaTreinoContentState extends State<AtletaTreinoContent> {
                               child: PersonCard(
                                 rating: false,
                                 usuario: Usuario(
-                                  id: 1,
+                                  id: '1',
                                   nome: 'João da Silva',
                                   email: 'joao@email.com',
                                   senha: '',
@@ -104,7 +102,7 @@ class _AtletaTreinoContentState extends State<AtletaTreinoContent> {
                                       return PersonCard(
                                           rating: true,
                                           usuario: Usuario(
-                                            id: 1,
+                                            id: '1',
                                             nome: 'João da Silva',
                                             email: 'joao@email.com',
                                             senha: '',

@@ -30,7 +30,7 @@ class PerfilController extends ChangeNotifier {
 
         _state.nomeController.text = _state.usuario.nome;
         _state.emailController.text = _state.usuario.email;
-        _state.senhaController.text = _state.usuario.senha;
+        //_state.senhaController.text = _state.usuario.senha;
 
         WidgetsBinding.instance!.addPostFrameCallback((_) {
           notifyListeners();
@@ -45,7 +45,7 @@ class PerfilController extends ChangeNotifier {
     if(!_state.isEditing) {
       _state.nomeController.text = _state.usuario.nome;
       _state.emailController.text = _state.usuario.email;
-      _state.senhaController.text = _state.usuario.senha;
+      //_state.senhaController.text = _state.usuario.senha;
       _state.showPassword = false;
     }
 

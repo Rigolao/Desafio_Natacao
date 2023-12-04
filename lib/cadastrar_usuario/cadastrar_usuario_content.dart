@@ -65,9 +65,11 @@ class CadastrarUsuarioContent extends StatelessWidget {
                                     TipoUsuario.ADMINISTRADOR,
                                 controller.state.usuario.tipoUsuario ==
                                     TipoUsuario.TREINADOR,
+                                controller.state.usuario.tipoUsuario ==
+                                    TipoUsuario.ATLETA
                               ],
                               onPressed: (int index) {
-                                controller.atualizarTipoUsuario(index == 0);
+                                controller.atualizarTipoUsuario(index);
                               },
                               children: const <Widget>[
                                 Padding(
@@ -78,19 +80,38 @@ class CadastrarUsuarioContent extends StatelessWidget {
                                   padding: EdgeInsets.all(8.0),
                                   child: Text('Treinador'),
                                 ),
+                                Padding(
+                                  padding: EdgeInsets.all(8.0),
+                                  child: Text('Atleta'),
+                                )
                               ],
                             ),
                           ),
                           FilledButton(
-                              onPressed: () {
-                                if(controller.state.usuario.nome == '') {
-                                  controller.addUsuario(homeController.state.usuarios);
-                                } else {
-                                  controller.editarUsuario(homeController.state.usuarios, homeController.state.usuarios.indexOf(usuario!));
+                              onPressed: () async {
+                                try {
+                                  if (controller.state.usuario.nome == '') {
+                                    await controller.addUsuario(
+                                        homeController.state.usuarios, context);
+                                  } else {
+                                    await controller.editarUsuario(
+                                        homeController.state.usuarios,
+                                        homeController.state.usuarios
+                                            .indexOf(usuario!));
+                                  }
+                                  Navigator.of(context).pop();
+                                } catch (e) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(
+                                          'Erro ao processar a operação: $e'),
+                                    ),
+                                  );
                                 }
-                                Navigator.of(context).pop();
                               },
-                              child: Text(controller.state.usuario.nome == '' ? 'Cadastrar' : 'Atualizar'))
+                              child: Text(controller.state.usuario.nome == ''
+                                  ? 'Cadastrar'
+                                  : 'Atualizar'))
                         ],
                       ),
                     ),

@@ -19,7 +19,7 @@ class FinalizarCadastroController extends ChangeNotifier {
     ],
     0,
     Atleta(
-      id: 0,
+      id: '0',
       nome: '',
       email: '',
       senha: '',

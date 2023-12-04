@@ -53,27 +53,22 @@ class LoginController extends ChangeNotifier {
       final email = state.emailController.text;
       final senha = state.senhaController.text;
 
-      Usuario usuario;
+      final user = await FlutterFireAuth.signInWithEmailAndPassword(email, senha);
 
-      final user = await FlutterFireAuth(context).signInWithEmailAndPassword(email, senha);
-
-      print(user);
+      print(user?.email);
+      print(user?.nome);
+      print(user?.tipoUsuario);
+      print(user?.id);
 
       if (user != null) {
-        usuario = Usuario(
-                nome: 'Diego',
-                email: user.email!,
-                senha: '123456',
-                tipoUsuario: user.tipoUsuario!,
-              );
-        appController.setUsuario(usuario);
+        appController.setUsuario(user);
         _resetForm();
-        _navegacaoParaHome(user, context);
+        _navegacaoParaHome(context);
       }
     }
   }
 
-  void _navegacaoParaHome (UserData user, BuildContext context) {
+  void _navegacaoParaHome (BuildContext context) {
     Navigator.of(context).pushReplacementNamed('/home');
   }
 }

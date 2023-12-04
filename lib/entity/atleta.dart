@@ -31,7 +31,7 @@ class Atleta extends Usuario {
   List<Telefone> _telefones;
 
 Atleta({
-    required int id,
+    required String id,
     required String nome,
     required String email,
     required String senha,
