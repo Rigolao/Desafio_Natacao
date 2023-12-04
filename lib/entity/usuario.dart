@@ -1,5 +1,7 @@
 import 'package:desafio_6_etapa/entity/tipo_usuario.dart';
 
+import '../util/converter.dart';
+
 class Usuario {
   String? id;
   String nome;
@@ -14,7 +16,7 @@ class Usuario {
       'uuid': id,
       'nome': nome,
       'email': email,
-      'tipoUsuario': tipoUsuario.toString().split('.').last
+      'tipoUsuario': ConversorEnum.converterEnumParaString(tipoUsuario)
     };
   }
 }

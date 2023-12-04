@@ -13,6 +13,7 @@ class TreinoController extends ChangeNotifier {
 
   final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
 
+
   void inicializar(BuildContext context) {
     if (_state.isLoading) {
       _firebaseFirestore.collection('treinos').get().then((value) {
