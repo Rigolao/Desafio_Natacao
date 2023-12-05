@@ -1,5 +1,7 @@
+import 'dart:io';
 
 import 'package:desafio_6_etapa/entity/tipo_usuario.dart';
+
 class ConversorEnum {
   static TipoUsuario converterStringParaEnum(String tipoUsuario) {
     switch (tipoUsuario.toUpperCase()) {
@@ -25,5 +27,12 @@ class ConversorEnum {
       default:
         throw ArgumentError('Tipo de usuário desconhecido: $tipoUsuario');
     }
+  }
+
+  static Future<File?> converterImagePathParaFile(String? imagePath) async {
+    if (imagePath == null) {
+      return null;
+    }
+    return File(imagePath);
   }
 }

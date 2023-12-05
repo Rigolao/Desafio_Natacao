@@ -118,7 +118,12 @@ class Atleta extends Usuario {
       'est': est,
       'pvr': pvr,
       'telefones': telefones,
-      'primeiroAcesso': false
+      'primeiroAcesso': false,
+      'fotoRg': fotoRg,
+      'fotoCpf': fotoCpf,
+      'fotoAtleta': fotoAtleta,
+      'fotoComprovanteResidencia': fotoCompRes,
+      'fotoAtestado': atestado
     };
   }
 
