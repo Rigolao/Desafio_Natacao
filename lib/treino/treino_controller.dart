@@ -3,6 +3,7 @@ import 'package:desafio_6_etapa/entity/tipo_usuario.dart';
 import 'package:desafio_6_etapa/entity/treino.dart';
 import 'package:desafio_6_etapa/treino/treino_state.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../app/app_controller.dart';
@@ -18,9 +19,21 @@ class TreinoController extends ChangeNotifier {
   void inicializar(BuildContext context) {
     if (_state.isLoading) {
       _firebaseFirestore.collection('treinos').get().then((value) {
-        _state.treinos = value.docs
+        _state.treinos = List.empty();
+
+        List<Treino> treinos = value.docs
             .map((e) => Treino.fromJson(e.data() as Map<String, dynamic>))
             .toList();
+
+        List<Treino> treinosValidos = [];
+
+        for (var element in treinos) {
+          if (!isDatePassed(element.horario)) {
+            treinosValidos.add(element);
+          }
+        }
+
+        _state.treinos = treinosValidos;
 
         _state.isLoading = false;
         notifyListeners();
@@ -136,5 +149,17 @@ class TreinoController extends ChangeNotifier {
         Provider.of<AppController>(context, listen: false);
 
     return appController.state.usuario!.tipoUsuario == TipoUsuario.TREINADOR;
+  }
+
+  bool isDatePassed(String dateString) {
+    try {
+      DateTime now = DateTime.now();
+      DateTime dateTime = DateFormat("dd/MM/yyyy HH:mm").parse(dateString);
+
+      return now.isAfter(dateTime);
+    } catch (e) {
+      print('Erro ao analisar a data/hora: $e');
+      return false;
+    }
   }
 }

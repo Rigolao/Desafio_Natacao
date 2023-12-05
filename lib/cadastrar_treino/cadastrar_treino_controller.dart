@@ -81,7 +81,7 @@ class CadastrarTreinoController extends ChangeNotifier {
 
       fetchTreinos();
 
-      Navigator.pop(context);
+      Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
 
       TreinoController treinoController =
           Provider.of<TreinoController>(context, listen: false);
