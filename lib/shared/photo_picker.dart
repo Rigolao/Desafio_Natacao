@@ -1,4 +1,5 @@
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class PhotoPicker extends StatelessWidget {
@@ -16,11 +17,19 @@ class PhotoPicker extends StatelessWidget {
         const Divider(),
         ElevatedButton(
           onPressed: () {
-            FilePicker.platform.pickFiles().then((value) {
-              if (value != null) {
-                changeImage(value.files.single.path!);
-              }
-            });
+            if(kIsWeb) {
+              FilePicker.platform.pickFiles().then((value) {
+                if (value != null) {
+                  changeImage(value.files.single.bytes!);
+                }
+              });
+            } else {
+              FilePicker.platform.pickFiles().then((value) {
+                if (value != null) {
+                  changeImage(value.files.single.path!);
+                }
+              });
+            }
           },
           style: ElevatedButton.styleFrom(
             foregroundColor: Colors.white,

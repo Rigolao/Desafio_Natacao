@@ -2,6 +2,7 @@ import 'package:desafio_6_etapa/login/login_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../services/flutter_fire_auth.dart';
 import '../theme/theme.g.dart';
 
 class LoginContent extends StatefulWidget {
@@ -97,7 +98,7 @@ class _LoginContentState extends State<LoginContent> {
                                     Align(
                                       alignment: Alignment.centerRight,
                                       child: TextButton(
-                                          onPressed: () => {},
+                                          onPressed: () => {_mostrarDialog(context, controller)},
                                           child: const Text(
                                               'ESQUECI MINHA SENHA')),
                                     ),
@@ -132,5 +133,43 @@ class _LoginContentState extends State<LoginContent> {
             );
           });
         });
+  }
+
+  void _mostrarDialog(BuildContext context, LoginController controller) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Recuperação de Senha'),
+          content: Container(
+            padding: EdgeInsets.symmetric(vertical: 8.0), // Ajuste conforme necessário
+            child: Column(
+              mainAxisSize: MainAxisSize.min, // Define o tamanho mínimo
+              children: [
+                Text('Digite seu e-mail:'),
+                TextField(
+                 controller: controller.state.emailEsqueciMinhaSenhaController,
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                controller.enviarEmailDeRecuperacaoDeSenha(controller.state.emailEsqueciMinhaSenhaController);
+                Navigator.pop(context); // Fecha o Dialog
+              },
+              child: Text('Enviar'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context); // Fecha o Dialog
+              },
+              child: Text('Cancelar'),
+            ),
+          ],
+        );
+      },
+    );
   }
 }

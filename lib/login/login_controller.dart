@@ -68,4 +68,12 @@ class LoginController extends ChangeNotifier {
   void _navegacaoParaHome (BuildContext context) {
     Navigator.of(context).pushReplacementNamed('/home');
   }
+
+  void enviarEmailDeRecuperacaoDeSenha(TextEditingController? email) {
+    try {
+      FlutterFireAuth.sendPasswordResetEmail(email.toString());
+    } catch(e){
+      print(e);
+    }
+  }
 }

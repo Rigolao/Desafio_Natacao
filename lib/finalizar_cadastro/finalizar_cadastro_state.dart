@@ -24,11 +24,11 @@ class FinalizarCadastroState {
   final TextEditingController alergiaController = TextEditingController();
   final TextEditingController estController = TextEditingController();
   final TextEditingController pvrController = TextEditingController();
-  String? atestadoController;
-  String? fotoRGController;
-  String? fotoCPFController;
-  String? comprovanteResidenciaController;
-  String? foto3x4Controller;
+  dynamic atestadoController;
+  dynamic fotoRGController;
+  dynamic fotoCPFController;
+  dynamic comprovanteResidenciaController;
+  dynamic foto3x4Controller;
 
   int currentIndex;
   final List<Widget> pages;

@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:desafio_6_etapa/app/app_controller.dart';
@@ -11,8 +12,6 @@ import 'package:desafio_6_etapa/finalizar_cadastro/pages/outros_content.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:uuid/uuid.dart';
-import 'package:uuid/v4.dart';
 
 import 'finalizar_cadastro_state.dart';
 
@@ -56,49 +55,78 @@ class FinalizarCadastroController extends ChangeNotifier {
   Future<String?> criarAtleta(
       BuildContext context, Map<String, dynamic> atletaDados) async {
     final AppController appController =
-        Provider.of<AppController>(context, listen: false);
+    Provider.of<AppController>(context, listen: false);
 
     final usuario = appController.state.usuario;
 
     final usuarios = FirebaseFirestore.instance.collection('usuarios');
 
-    await usuarios.doc(usuario!.id).set(atletaDados, SetOptions(merge: true));
+    Map<String, String?> nomesArquivos = await saveAllDocs(atletaDados);
 
-    if (atletaDados['fotoRg'] != null) {
-      await salvarDocs(atletaDados['fotoRg']);
-    }
-
-    if (atletaDados['fotoCpf'] != null) {
-      await salvarDocs(atletaDados['fotoCpf']);
-    }
-
-    if (atletaDados['fotoRg'] != null) {
-      await salvarDocs(atletaDados['fotoRg']);
-    }
-
-    if (atletaDados['fotoAtleta'] != null) {
-      await salvarDocs(atletaDados['fotoAtleta']);
-    }
-
-    if (atletaDados['fotoComprovanteResidencia'] != null) {
-      await salvarDocs(atletaDados['fotoComprovanteResidencia']);
-    }
-
-    if (atletaDados['fotoAtestado'] != null) {
-      await salvarDocs(atletaDados['fotoAtestado']);
-    }
+    await usuarios.doc(usuario!.id).set({
+      ...atletaDados,
+      'fotoRg': nomesArquivos['fotoRg'],
+      'fotoCpf': nomesArquivos['fotoCpf'],
+      'fotoAtleta': nomesArquivos['fotoAtleta'],
+      'fotoComprovanteResidencia': nomesArquivos['fotoComprovanteResidencia'],
+      'fotoAtestado': nomesArquivos['fotoAtestado'],
+    }, SetOptions(merge: true));
 
     return usuario.id;
   }
 
-  Future<void> salvarDocs(String? path) async {
-    File file = File(path.toString());
+  Future<Map<String, String?>> saveAllDocs(
+      final Map<String, dynamic> atletaDados) async {
+    Map<String, String?> nomesArquivos = {};
 
-    Reference storageReference = FirebaseStorage.instance
-        .ref()
-        .child('uploads/123.${file.path.toString().split('.').last}');
-    await storageReference.putFile(file);
+    if (atletaDados['fotoRg'] != null) {
+      nomesArquivos['fotoRg'] = await _saveDoc(atletaDados['fotoRg']);
+    }
+
+    if (atletaDados['fotoCpf'] != null) {
+      nomesArquivos['fotoCpf'] = await _saveDoc(atletaDados['fotoCpf']);
+    }
+
+    if (atletaDados['fotoAtleta'] != null) {
+      nomesArquivos['fotoAtleta'] = await _saveDoc(atletaDados['fotoAtleta']);
+    }
+
+    if (atletaDados['fotoComprovanteResidencia'] != null) {
+      nomesArquivos['fotoComprovanteResidencia'] =
+      await _saveDoc(atletaDados['fotoComprovanteResidencia']);
+    }
+
+    if (atletaDados['fotoAtestado'] != null) {
+      nomesArquivos['fotoAtestado'] = await _saveDoc(atletaDados['fotoAtestado']);
+    }
+
+    return nomesArquivos;
   }
+
+  Future<String?> _saveDoc(dynamic value) async {
+    Uint8List bytes;
+
+    if (value is Uint8List) {
+      bytes = value;
+    } else if (value is String) {
+      File file = File(value);
+      bytes = await file.readAsBytes();
+    } else {
+      print('Tipo não suportado: ${value.runtimeType}');
+      return null;
+    }
+
+    debugPrint("passei por aqui");
+
+    String nomeArquivo = DateTime.now().millisecondsSinceEpoch.toString();
+
+    Reference storageReference =
+    FirebaseStorage.instance.ref().child('uploads/$nomeArquivo.jpg');
+    await storageReference.putData(bytes);
+
+    return nomeArquivo;
+  }
+
 
   Atleta criarAtleta1(BuildContext context) {
     final AppController appController =

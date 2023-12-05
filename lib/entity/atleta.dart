@@ -22,12 +22,12 @@ class Atleta extends Usuario {
   String? _alg; // Alergia
   String _est;
   String _pvr;
-  String? _atestado;
-  String? _fotoRg;
-  String? _fotoCpf;
-  String? _fotoAtleta;
-  String? _fotoCompRes;
-  String? _regulamento;
+  dynamic _atestado;
+  dynamic _fotoRg;
+  dynamic _fotoCpf;
+  dynamic _fotoAtleta;
+  dynamic _fotoCompRes;
+  dynamic _regulamento;
   List<Telefone> _telefones;
 
   Atleta({
@@ -54,12 +54,12 @@ class Atleta extends Usuario {
     String? alg,
     required String est,
     required String pvr,
-    String? atestado,
-    String? fotoRg,
-    String? fotoCpf,
-    String? fotoAtleta,
-    String? fotoCompRes,
-    String? regulamento,
+    dynamic atestado,
+    dynamic fotoRg,
+    dynamic fotoCpf,
+    dynamic fotoAtleta,
+    dynamic fotoCompRes,
+    dynamic regulamento,
     required List<Telefone> telefones,
   })  : _dataNascimento = dataNascimento,
         _naturalidade = naturalidade,
@@ -239,39 +239,39 @@ class Atleta extends Usuario {
     _pvr = value;
   }
 
-  String? get atestado => _atestado;
+  dynamic get atestado => _atestado;
 
-  set atestado(String? value) {
+  set atestado(dynamic value) {
     _atestado = value;
   }
 
-  String? get fotoRg => _fotoRg;
+  dynamic get fotoRg => _fotoRg;
 
-  set fotoRg(String? value) {
+  set fotoRg(dynamic value) {
     _fotoRg = value;
   }
 
-  String? get fotoCpf => _fotoCpf;
+  dynamic get fotoCpf => _fotoCpf;
 
-  set fotoCpf(String? value) {
+  set fotoCpf(dynamic value) {
     _fotoCpf = value;
   }
 
-  String? get fotoAtleta => _fotoAtleta;
+  dynamic get fotoAtleta => _fotoAtleta;
 
-  set fotoAtleta(String? value) {
+  set fotoAtleta(dynamic value) {
     _fotoAtleta = value;
   }
 
-  String? get fotoCompRes => _fotoCompRes;
+  dynamic get fotoCompRes => _fotoCompRes;
 
-  set fotoCompRes(String? value) {
+  set fotoCompRes(dynamic value) {
     _fotoCompRes = value;
   }
 
-  String? get regulamento => _regulamento;
+  dynamic get regulamento => _regulamento;
 
-  set regulamento(String? value) {
+  set regulamento(dynamic value) {
     _regulamento = value;
   }
 

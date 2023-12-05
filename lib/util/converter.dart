@@ -28,11 +28,4 @@ class ConversorEnum {
         throw ArgumentError('Tipo de usuário desconhecido: $tipoUsuario');
     }
   }
-
-  static Future<File?> converterImagePathParaFile(String? imagePath) async {
-    if (imagePath == null) {
-      return null;
-    }
-    return File(imagePath);
-  }
 }
