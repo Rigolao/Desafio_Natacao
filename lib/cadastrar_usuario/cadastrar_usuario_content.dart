@@ -25,6 +25,10 @@ class CadastrarUsuarioContent extends StatelessWidget {
               controller.setUsuario(usuario!);
             }
 
+            if (controller.state.isLoading) {
+              return const Center(child: CircularProgressIndicator());
+            }
+
             return Scaffold(
                 appBar: AppBar(
                   backgroundColor: Theme.of(context).colorScheme.primary,
@@ -91,15 +95,12 @@ class CadastrarUsuarioContent extends StatelessWidget {
                               onPressed: () async {
                                 try {
                                   if (controller.state.usuario.nome == '') {
-                                    await controller.addUsuario(
+                                    controller.addUsuario(
                                         homeController.state.usuarios, context);
                                   } else {
                                     await controller.editarUsuario(
-                                        homeController.state.usuarios,
-                                        homeController.state.usuarios
-                                            .indexOf(usuario!));
+                                        context, controller.state.usuario);
                                   }
-                                  Navigator.of(context).pop();
                                 } catch (e) {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(

@@ -21,7 +21,7 @@ class HomeContent extends StatelessWidget {
         return Consumer<HomeController>(
           builder: (context, controller, child) {
 
-            controller.inicializar(appController.state.usuario!.tipoUsuario);
+            controller.inicializar(context);
 
             return Scaffold(
                 appBar: AppBar(
@@ -49,11 +49,8 @@ class HomeContent extends StatelessWidget {
                                         mainAxisSize: MainAxisSize.min,
                                         children: [
                                           IconButton(
-                                            onPressed: () => controller.navegaCriarUsuario(context, usuario: controller.state.usuarios[index]),
-                                            icon: const Icon(Icons.edit),
-                                          ),
-                                          IconButton(
-                                            onPressed: () => controller.removerUsuario(index),
+                                            onPressed: () => controller.removerUsuario(context, controller
+                                                .state.usuarios[index]),
                                             icon: const Icon(Icons.delete),
                                           ),
                                         ],

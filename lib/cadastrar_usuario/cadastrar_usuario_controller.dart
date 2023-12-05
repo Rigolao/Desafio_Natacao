@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import '../app/app_controller.dart';
 import '../entity/tipo_usuario.dart';
 import '../entity/usuario.dart';
 import '../services/flutter_fire_auth.dart';
@@ -10,8 +12,11 @@ class CadastrarUsuarioController extends ChangeNotifier {
 
   CadastrarUsuarioState get _state => state;
 
-  Future<void> addUsuario(final List<Usuario> listaUsuarios, BuildContext context) async {
+  void addUsuario(final List<Usuario> listaUsuarios, BuildContext context) {
+    state.isLoading = true;
     try {
+      notifyListeners();
+
       final Usuario usuario = Usuario(
         nome: _state.nomeController.text,
         email: _state.emailController.text,
@@ -20,36 +25,69 @@ class CadastrarUsuarioController extends ChangeNotifier {
 
       debugPrint(usuario.tipoUsuario.toString().split('.').last);
 
-      // Use await para esperar a conclusão da função assíncrona
-      FlutterFireAuth.createUserWithEmailAndPassword(usuario);
+      FlutterFireAuth.createUserWithEmailAndPassword(usuario, () {
+        listaUsuarios.add(usuario);
 
-      listaUsuarios.add(usuario);
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Usuário adicionado com sucesso!'),
+          ),
+        );
 
-      notifyListeners();
+        Navigator.of(context).pop();
+
+        state.isLoading = false;
+        notifyListeners();});
     } catch (e) {
       print('Erro ao adicionar usuário: $e');
+
+      state.isLoading = false;
+      notifyListeners();
+
       ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Erro ao adicionar usuário: $e'),
-          )
+        SnackBar(
+          content: Text('Erro ao adicionar usuário: $e'),
+        ),
       );
     }
   }
 
 
+  Future<void> editarUsuario(BuildContext context, final Usuario usuario) async {
+    state.isLoading = true;
+    try {
+      notifyListeners();
 
+      final Usuario usuarioEditado = Usuario(
+        nome: _state.nomeController.text,
+        email: _state.emailController.text,
+        senha: _state.senhaController.text,
+        tipoUsuario: _state.usuario.tipoUsuario,
+      );
 
-  Future<void> editarUsuario(final List<Usuario> listaUsuarios, int index) async {
-    final Usuario usuario = Usuario(
-      nome: _state.nomeController.text,
-      email: _state.emailController.text,
-      senha: _state.senhaController.text,
-      tipoUsuario: _state.usuario.tipoUsuario,
-    );
+      FlutterFireAuth.updateUser(usuarioEditado, () {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Usuário editado com sucesso!'),
+          ),
+        );
 
-    listaUsuarios[index] = usuario;
+        Navigator.of(context).pop();
 
-    notifyListeners();
+        state.isLoading = false;
+        notifyListeners();});
+    } catch (e) {
+      print('Erro ao editar usuário: $e');
+
+      state.isLoading = false;
+      notifyListeners();
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Erro ao editar usuário: $e'),
+        ),
+      );
+    }
   }
 
   void atualizarTipoUsuario(int index) {

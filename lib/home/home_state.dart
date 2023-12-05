@@ -9,6 +9,6 @@ class HomeState {
   String title;
   int currentIndex;
   final List<Widget> pages;
-  final List<Usuario> usuarios;
+  List<Usuario> usuarios;
   HomeState(this.title, this.currentIndex, this.pages, this.usuarios);
 }

@@ -26,7 +26,8 @@ class FlutterFireAuth {
     }
   }
 
-  static void createUserWithEmailAndPassword(Usuario usuario) async {
+  static void createUserWithEmailAndPassword(
+      Usuario usuario, Function callback) async {
     try {
       UserCredential userCredential =
           await _auth.createUserWithEmailAndPassword(
@@ -37,13 +38,14 @@ class FlutterFireAuth {
       await _cloud
           .collection(COLECAO_USUARIOS)
           .doc(userCredential.user!.uid)
-          .set(usuario.toJson());
-
-      sendPasswordResetEmail(usuario.email);
-      debugPrint('deu certo');
-
+          .set(usuario.toJson())
+          .then((value) {
+        sendPasswordResetEmail(usuario.email);
+        debugPrint('deu certo');
+        callback();
+      });
     } catch (e) {
-      if (usuario.id != null){
+      if (usuario.id != null) {
         debugPrint('Rollback iniciando...');
         await _auth.currentUser?.delete();
         debugPrint('Rollback concluido');
@@ -62,18 +64,17 @@ class FlutterFireAuth {
       final String userUid = credencial.user!.uid;
 
       final dadoUsuario =
-      await _cloud.collection('usuarios').doc(userUid).get();
+          await _cloud.collection('usuarios').doc(userUid).get();
 
       if (dadoUsuario.exists) {
         final Map<String, dynamic>? dados = dadoUsuario.data();
 
         if (dados != null) {
           return Usuario(
-            nome: dados['nome'],
-            email: dados['email'],
-            tipoUsuario: getTipoUsuario(dados['tipoUsuario']),
-            id: dados['uuid']
-          );
+              nome: dados['nome'],
+              email: dados['email'],
+              tipoUsuario: getTipoUsuario(dados['tipoUsuario']),
+              id: dados['uuid']);
         } else {
           print('Os dados do documento são nulos.');
           return null;
@@ -101,10 +102,35 @@ class FlutterFireAuth {
     }
   }
 
-
-
-
   void getLoggedUser() {}
 
   void signOut() {}
+
+  static void updateUser(Usuario usuario, Function function) async {
+    try {
+      _auth.currentUser?.updateEmail(usuario.email).then((value) {
+        _cloud
+            .collection(COLECAO_USUARIOS)
+            .doc(usuario.id)
+            .update(usuario.toJson())
+            .then((_) {
+          function();
+        });
+      });
+    } catch (e) {
+      debugPrint('Erro ao atualizar usuário: $e');
+    }
+  }
+
+  static void deleteUser(Usuario usuario, Function function) async {
+    try {
+      _auth.currentUser?.delete().then((value) {
+        _cloud.collection(COLECAO_USUARIOS).doc(usuario.id).delete().then((_) {
+          function();
+        });
+      });
+    } catch (e) {
+      debugPrint('Erro ao remover usuário: $e');
+    }
+  }
 }
