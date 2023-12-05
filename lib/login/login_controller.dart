@@ -4,9 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../app/app_controller.dart';
-import '../entity/tipo_usuario.dart';
-import '../entity/usuario.dart';
-import '../models/user_data.dart';
 
 class LoginController extends ChangeNotifier {
   final _state = LoginState(GlobalKey<FormState>(), TextEditingController(),

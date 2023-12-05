@@ -19,16 +19,16 @@ class ImagensContent extends StatelessWidget {
             controller.state.atestadoController = value;
           }),
           PhotoPicker(title: "RG", changeImage: (value) {
-            controller.state.atestadoController = value;
+            controller.state.fotoRGController = value;
           }),
           PhotoPicker(title: "CPF", changeImage: (value) {
-            controller.state.atestadoController = value;
+            controller.state.fotoCPFController = value;
           }),
           PhotoPicker(title: "Comprovante de residência", changeImage: (value) {
-            controller.state.atestadoController = value;
+            controller.state.comprovanteResidenciaController = value;
           }),
           PhotoPicker(title: "Foto 3x4", changeImage: (value) {
-            controller.state.atestadoController = value;
+            controller.state.foto3x4Controller = value;
           }),
         ],
       ),
