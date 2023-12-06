@@ -3,6 +3,7 @@ import 'dart:js_interop_unsafe';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:desafio_6_etapa/cadastrar_usuario/cadastrar_usuario_content.dart';
+import 'package:desafio_6_etapa/historico/historico_content.dart';
 import 'package:desafio_6_etapa/perfil/perfil_content.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -18,7 +19,7 @@ import 'home_state.dart';
 class HomeController extends ChangeNotifier {
   final state = HomeState('Treinos', 0, [
     const TreinoContent(),
-    Page2(),
+    const HistoricoContent(),
     const PerfilContent()
   ], []);
 
@@ -205,13 +206,3 @@ class HomeController extends ChangeNotifier {
     return (index) => onTabTapped(context, index, tipoUsuario);
   }
 }
-
-class Page2 extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return const Center(
-      child: Text('Histórico de treinos'),
-    );
-  }
-}
-

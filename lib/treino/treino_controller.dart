@@ -156,7 +156,7 @@ class TreinoController extends ChangeNotifier {
       DateTime now = DateTime.now();
       DateTime dateTime = DateFormat("dd/MM/yyyy HH:mm").parse(dateString);
 
-      return now.isBefore(dateTime) || now.isAtSameMomentAs(dateTime);
+      return now.isAfter(dateTime) || now.isAtSameMomentAs(dateTime);
     } catch (e) {
       print('Erro ao analisar a data/hora: $e');
       return false;

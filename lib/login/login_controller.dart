@@ -13,6 +13,8 @@ class LoginController extends ChangeNotifier {
 
   void alterarVisibilidadeSenha() {
     _state.showPassword = !_state.showPassword;
+    state.emailController.text = 'desafio6etapa@gmail.com';
+    state.senhaController.text = 'joao123';
     notifyListeners();
   }
 

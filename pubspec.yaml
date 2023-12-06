@@ -46,6 +46,7 @@ dependencies:
   random_string: ^2.2.0
   fake_cloud_firestore: ^2.4.4
   firebase_auth_mocks: ^0.13.0
+  fl_chart: ^0.65.0
 
 dev_dependencies:
   integration_test:

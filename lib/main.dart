@@ -1,8 +1,10 @@
+import 'package:desafio_6_etapa/atleta_historico/atleta_historico_content.dart';
 import 'package:desafio_6_etapa/atletas_treino/atletas_treino_content.dart';
 import 'package:desafio_6_etapa/cadastrar_treino/cadastrar_treino_content.dart';
 import 'package:desafio_6_etapa/cronometro/cronometro_content.dart';
 import 'package:desafio_6_etapa/entity/usuario.dart';
 import 'package:desafio_6_etapa/firebase_options.dart';
+import 'package:desafio_6_etapa/historico/historico_content.dart';
 import 'package:desafio_6_etapa/login/login_content.dart';
 import 'package:desafio_6_etapa/theme/theme.g.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -55,6 +57,8 @@ class MyApp extends StatelessWidget {
           '/cadastrar-usuario': (context) => const CadastrarUsuarioContent(),
           '/cadastrar-treino': (context) => CadastrarTreinoContent(fetchTreinos: () {}),
           '/cronometro': (context) => CronometroContent(ritmoInicial: "" ),
+          '/historico': (context) => const HistoricoContent(),
+          '/atleta-treino': (context) => const AtletaHistoricoContent(),
         }
       ),
     );
