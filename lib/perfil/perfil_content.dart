@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:desafio_6_etapa/perfil/perfil_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -26,7 +28,26 @@ class PerfilContent extends StatelessWidget {
                     alignment: WrapAlignment.center,
                     runSpacing: 16,
                     children: [
-                      const Icon(Icons.person, size: 100),
+                      FutureBuilder<Uint8List?>(
+                        future: controller.getFoto(context),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState == ConnectionState.waiting) {
+                            return CircularProgressIndicator();
+                          } else if (snapshot.hasError || snapshot.data == null) {
+                            return CircleAvatar(
+                              radius: 50.0,
+                              child: Icon(Icons.person), // Ícone de erro
+                            );
+                          } else {
+                            Image image = Image.memory(snapshot.data!);
+
+                            return CircleAvatar(
+                              radius: 50.0,
+                              backgroundImage:image.image,
+                            );
+                          }
+                        },
+                      ),
                       TextFormField(
                         controller: controller.state.nomeController,
                         readOnly: !controller.state.isEditing,
@@ -38,34 +59,34 @@ class PerfilContent extends StatelessWidget {
                       ),
                       TextFormField(
                         controller: controller.state.emailController,
-                        readOnly: !controller.state.isEditing,
+                        readOnly: true,
                         validator: controller.validateEmail,
                         decoration: const InputDecoration(
                           border: OutlineInputBorder(),
                           labelText: 'Email',
                         ),
                       ),
-                      Visibility(
-                        visible: controller.state.isEditing,
-                        child: TextFormField(
-                          controller: controller.state.senhaController,
-                          readOnly: !controller.state.isEditing,
-                          obscureText: !controller.state.showPassword,
-                          validator: controller.validatePassword,
-                          decoration: InputDecoration(
-                            border: const OutlineInputBorder(),
-                            suffixIcon: IconButton(
-                              icon: Icon(
-                                controller.state.showPassword
-                                    ? Icons.visibility_off
-                                    : Icons.visibility,
-                              ),
-                              onPressed: () => controller.onShowPassword(),
-                            ),
-                            labelText: 'Senha',
-                          ),
-                        ),
-                      ),
+                      // Visibility(
+                      //   visible: controller.state.isEditing,
+                      //   child: TextFormField(
+                      //     controller: controller.state.senhaController,
+                      //     readOnly: !controller.state.isEditing,
+                      //     obscureText: !controller.state.showPassword,
+                      //     validator: controller.validatePassword,
+                      //     decoration: InputDecoration(
+                      //       border: const OutlineInputBorder(),
+                      //       suffixIcon: IconButton(
+                      //         icon: Icon(
+                      //           controller.state.showPassword
+                      //               ? Icons.visibility_off
+                      //               : Icons.visibility,
+                      //         ),
+                      //         onPressed: () => controller.onShowPassword(),
+                      //       ),
+                      //       labelText: 'Senha',
+                      //     ),
+                      //   ),
+                      // ),
                       Column(
                         children: [
                           FilledButton(onPressed: () {
@@ -95,3 +116,5 @@ class PerfilContent extends StatelessWidget {
     );
   }
 }
+
+

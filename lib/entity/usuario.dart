@@ -7,6 +7,9 @@ class Usuario {
   String nome;
   String email;
   String? senha;
+  String? nomeMae;
+  String? nomePai;
+  String? rua;
   TipoUsuario tipoUsuario = TipoUsuario.ATLETA;
 
   Usuario({this.id, required this.nome, required this.email, this.senha, this.tipoUsuario = TipoUsuario.ATLETA});

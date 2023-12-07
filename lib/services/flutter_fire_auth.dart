@@ -122,6 +122,16 @@ class FlutterFireAuth {
     }
   }
 
+  static void editingUser(Usuario usuario) async {
+    try{
+      await _cloud.collection('usuarios').doc(usuario.id).update({
+        'nome': usuario.nome,
+      });
+    }catch(e){
+      print(e);
+    };
+  }
+
   static void deleteUser(Usuario usuario, Function function) async {
     try {
       _auth.currentUser?.delete().then((value) {
