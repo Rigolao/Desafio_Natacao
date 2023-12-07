@@ -1,6 +1,3 @@
-import 'dart:async';
-import 'dart:js_interop_unsafe';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:desafio_6_etapa/cadastrar_usuario/cadastrar_usuario_content.dart';
 import 'package:desafio_6_etapa/historico/historico_content.dart';

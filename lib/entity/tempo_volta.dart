@@ -13,7 +13,7 @@ class TempoVolta {
       required this.isPiorVolta});
 
   TempoVolta.fromJson(Map<String, dynamic> json)
-      : tempo = json['tempo'] ?? 0,
+      : tempo = json['tempo']  ?? 0,
         tempoVolta = json['tempoVolta'] ?? 0,
         volta = json['volta'] ?? 0,
         isMelhorVolta = json['isMelhorVolta'] ?? false,

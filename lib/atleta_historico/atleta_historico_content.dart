@@ -28,59 +28,80 @@ class AtletaHistoricoContent extends StatelessWidget {
                     style: TextStyle(color: Colors.white),
                   ),
                 ),
-                body: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: LineChart(
-                      LineChartData(
-                        minY: 0,
-                        maxY: 600,
-                        minX: 0,
-                        maxX: controller.state.avaliacao!.intervalos.length.toDouble(),
-                        titlesData: FlTitlesData(
-                          topTitles: const AxisTitles(
-                            sideTitles: SideTitles(showTitles: false),
-                          ),
-                          rightTitles: const AxisTitles(
-                            sideTitles: SideTitles(showTitles: false),
-                          ),
-                          bottomTitles: const AxisTitles(
-                            axisNameWidget: Text("Voltas"),
-                            sideTitles: SideTitles(showTitles: true),
-                          ),
-                          leftTitles: AxisTitles(
-                            axisNameWidget: const Text("Minutos"),
-                            sideTitles: SideTitles(
-                              showTitles: true,
-                              getTitlesWidget: getLeftTitles,
+                body: Center(
+                  child: Container(
+                    height: MediaQuery.of(context).size.height * 0.75,
+                    child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: LineChart(
+                          LineChartData(
+                            minY: 0,
+                            maxY: 300,
+                            minX: 0,
+                            maxX: controller.state.avaliacao!.intervalos.length.toDouble(),
+                            titlesData: FlTitlesData(
+                              topTitles: const AxisTitles(
+                                sideTitles: SideTitles(showTitles: false),
+                              ),
+                              rightTitles: const AxisTitles(
+                                sideTitles: SideTitles(showTitles: false),
+                              ),
+                              bottomTitles: AxisTitles(
+                                axisNameWidget: const Text("Voltas"),
+                                sideTitles: SideTitles(showTitles: true, getTitlesWidget: getBottomTitles),
+                              ),
+                              leftTitles: AxisTitles(
+                                axisNameWidget: const Text("Minutos"),
+                                sideTitles: SideTitles(
+                                  showTitles: true,
+                                  getTitlesWidget: getLeftTitles,
+                                ),
+                              ),
                             ),
-                          ),
-                        ),
-                        lineBarsData: [
-                          LineChartBarData(
-                            spots: controller.state.avaliacao!.intervalos
-                                .map((e) => FlSpot(
-                                    e.volta.toDouble(),
-                                    e.tempo.toDouble() / 1000))
-                                .toList(),
-                          )
-                        ]),
-                    )));
+                            lineBarsData: [
+                              LineChartBarData(
+                                isCurved: true,
+                                spots: controller.state.avaliacao!.intervalos
+                                    .map((e) => FlSpot(
+                                        e.volta.toDouble(),
+                                        e.tempo.toDouble() / 1000))
+                                    .toList(),
+                              )
+                            ]),
+                        )),
+                  ),
+                ));
           });
         });
   }
 
   Widget getLeftTitles(double value, TitleMeta meta) {
-    int minutes = value ~/ 60;
-    int seconds = (value % 60).toInt();
+    int valor = value ~/ 10;
     return SideTitleWidget(
       axisSide: meta.axisSide,
       child: Text(
-        "$minutes:$seconds",
+        "$valor",
         softWrap: false,
         style: const TextStyle(
           color: Colors.grey,
           fontWeight: FontWeight.bold,
-          fontSize: 14,
+          fontSize: 11,
+        ),
+      ),
+    );
+  }
+
+  Widget getBottomTitles(double value, TitleMeta meta) {
+    int valor = value.ceil();
+    return SideTitleWidget(
+      axisSide: meta.axisSide,
+      child: Text(
+        "$valor",
+        softWrap: false,
+        style: const TextStyle(
+          color: Colors.grey,
+          fontWeight: FontWeight.bold,
+          fontSize: 12,
         ),
       ),
     );

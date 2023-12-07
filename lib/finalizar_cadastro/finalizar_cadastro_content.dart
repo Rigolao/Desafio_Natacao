@@ -16,6 +16,7 @@ class FinalizarCadastroContent extends StatelessWidget {
             return Scaffold(
               floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
               appBar: AppBar(
+                automaticallyImplyLeading: false,
                 title: const Text('Finalizar Cadastro'),
                 bottom: PreferredSize(
                   preferredSize: const Size.fromHeight(50),
