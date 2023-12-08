@@ -32,11 +32,11 @@ class PerfilContent extends StatelessWidget {
                         future: controller.getFoto(context),
                         builder: (context, snapshot) {
                           if (snapshot.connectionState == ConnectionState.waiting) {
-                            return CircularProgressIndicator();
+                            return const CircularProgressIndicator();
                           } else if (snapshot.hasError || snapshot.data == null) {
-                            return CircleAvatar(
+                            return const CircleAvatar(
                               radius: 50.0,
-                              child: Icon(Icons.person), // Ícone de erro
+                              child: Icon(Icons.person),
                             );
                           } else {
                             Image image = Image.memory(snapshot.data!);

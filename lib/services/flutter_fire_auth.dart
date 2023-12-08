@@ -102,10 +102,6 @@ class FlutterFireAuth {
     }
   }
 
-  void getLoggedUser() {}
-
-  void signOut() {}
-
   static void updateUser(Usuario usuario, Function function) async {
     try {
       _auth.currentUser?.updateEmail(usuario.email).then((value) {
